@@ -1,7 +1,6 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  margin: 0;
   text-align: center;
 }
 
@@ -39,4 +38,19 @@
 
 .read-the-docs {
   color: #888;
+}
+.css-1q1u3t4-MuiTableRow-root {
+  background-color: rgb(248, 249, 250);
+}
+.css-1q1u3t4-MuiTableRow-root:hover {
+  background-color: rgb(239, 246, 255);
+}
+.css-1q1u3t4-MuiTableRow-root.Mui-selected {
+  background-color: rgb(233, 249, 238);
+}
+.css-1ex1afd-MuiTableCell-root {
+  border: 1px white solid;
+}
+.css-1nf681w-MuiTableCell-root {
+  border: 1px white solid;
 }

@@ -1,16 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import LoginPage from "./modules/auth/pages/LoginPage";
+import { ROUTES } from "./configs/routes";
+import PrivateRoute from "./PrivateRoute";
+import HomePage from "./modules/pages/HomePage";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div className='bg-red-700'>hello</div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path={ROUTES.login} element={<LoginPage />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
