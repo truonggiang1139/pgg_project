@@ -4,7 +4,7 @@ export type LoginFormType = {
   factory: string;
 };
 
-export type Employee = {
+export type EmployeeType = {
   id: number;
   old_staff_id: number | null;
   staff_id: string;

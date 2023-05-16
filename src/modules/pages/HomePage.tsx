@@ -4,24 +4,42 @@ import BreadCrumbs from "../components/BreadCrumbs";
 import DataTable from "../components/DataTable";
 import SideBar from "../components/SideBar";
 import SearchIcon from "@mui/icons-material/Search";
+import { useState, useEffect } from "react";
+import { RootState, useAppDispatch } from "../../store";
+import { changeQuery, getEmployeeList } from "../../redux/employeeListSlice";
+import { useSelector } from "react-redux";
 export default function HomePage() {
+  const [query, setQuery] = useState(useSelector((state: RootState) => state.employee.query));
+  const page = useSelector((state: RootState) => state.employee.page);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      dispatch(changeQuery(query));
+      dispatch(getEmployeeList({ query, page }));
+    }, 1000);
+
+    return () => clearTimeout(timeoutId);
+  }, [query]);
   return (
     <div className="flex flex-col ">
-      <header className="fixed left-0 right-0 top-0 z-10 flex h-16 flex-row bg-white px-8 py-2 shadow-md ">
+      <header className="fixed left-0 right-0 top-0 z-30 flex h-16 flex-row bg-white px-8 py-2 shadow-md ">
         <div className="flex items-center">
           <img src={logo} alt="" className="mr-3 h-9 w-9" />
           <div className="text-2xl font-semibold">HR Management System</div>
         </div>
       </header>
-      <div className="mt-16  flex h-screen w-full ">
+      <div className=" mt-16 flex  w-full ">
         <SideBar />
-        <div className="  flex w-4/5 bg-rightContent">
+        <div className="   ml-300 flex  w-4/5 bg-rightContent ">
           <div className="mx-auto mt-8 w-11/12">
             <BreadCrumbs />
             <div className="my-4 flex justify-between">
               <div className=" text-left text-3xl">Employee Management</div>
               <TextField
                 size="small"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search..."
                 InputProps={{
                   sx: { borderRadius: "10px", width: "200px", backgroundColor: "white" },
