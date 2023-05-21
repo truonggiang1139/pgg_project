@@ -9,8 +9,10 @@ module.exports = {
         300: "300px",
         320: "320px",
         348: "348px",
-        450: "450px"
+        450: "450px",
+        "1/5": "20%"
       },
+
       height: {
         40: "40px",
         46: "46px",
@@ -18,7 +20,13 @@ module.exports = {
         600: "600px"
       },
       colors: {
+        tab: "rgb(237,246,255)",
+        textTab: "rgb(0, 145, 255)",
+        tabSelected: "rgb(0,145,255)",
         white: "rgb(255 255 255)",
+        total: "rgb(241, 243, 245)",
+        dataTable: "rgb(251,252,253)",
+        loading: "rgba(223, 227, 230, 0.3)",
         selectedIcon: "rgb(251, 253, 255)",
         input: "#f1f3f5",
         itemSelectedSideBar: "rgb(241, 243, 245)",

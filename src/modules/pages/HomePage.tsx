@@ -6,20 +6,35 @@ import SideBar from "../components/SideBar";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState, useEffect } from "react";
 import { RootState, useAppDispatch } from "../../store";
-import { changeQuery, getEmployeeList } from "../../redux/employeeListSlice";
+import { changePage, changeQuery, getEmployeeList } from "../../redux/employeeListSlice";
 import { useSelector } from "react-redux";
+import { pageSelector, querySelector } from "../../redux/employeeSelector";
+import { useLocation, useNavigate } from "react-router-dom";
 export default function HomePage() {
-  const [query, setQuery] = useState(useSelector((state: RootState) => state.employee.query));
-  const page = useSelector((state: RootState) => state.employee.page);
+  const [query, setQuery] = useState(useSelector(querySelector));
+  const page = useSelector(pageSelector);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search.split("?")[1]);
+  const searchValue = searchParams.get("search");
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      dispatch(changeQuery(query));
-      dispatch(getEmployeeList({ query, page }));
-    }, 1000);
-
-    return () => clearTimeout(timeoutId);
+    if (query) {
+      const timeoutId = setTimeout(() => {
+        dispatch(changeQuery(query));
+        dispatch(changePage(1));
+        dispatch(getEmployeeList({ query, page: 1 }));
+        navigate(`/employee?search=${query}&page=${1}`);
+      }, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+    if (searchValue) {
+      setTimeout(() => {
+        dispatch(changeQuery(query));
+        dispatch(getEmployeeList({ query, page }));
+        navigate(`/employee?search=${query}&page=${1}`);
+      }, 1000);
+    }
   }, [query]);
   return (
     <div className="flex flex-col ">
@@ -31,7 +46,7 @@ export default function HomePage() {
       </header>
       <div className=" mt-16 flex  w-full ">
         <SideBar />
-        <div className="   ml-300 flex  w-4/5 bg-rightContent ">
+        <div className="   ml-1/5 flex  w-4/5 bg-rightContent ">
           <div className="mx-auto mt-8 w-11/12">
             <BreadCrumbs />
             <div className="my-4 flex justify-between">

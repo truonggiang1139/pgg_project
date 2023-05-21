@@ -7,7 +7,6 @@ import { Typography } from "@mui/material";
 export default function BreadCrumbs() {
   const location = useLocation();
   const pathnames = location.pathname;
-  console.log(pathnames);
 
   const breadcrumbs = [
     <Link className="text-link" key={1} to="/home">
