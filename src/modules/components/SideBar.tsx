@@ -7,6 +7,7 @@ import iconUser from "../../assets/iconUser.svg";
 import iconMaster from "../../assets/iconMaster.svg";
 import iconGlobal from "../../assets/iconGlobal.svg";
 import iconSetting from "../../assets/iconSetting.svg";
+import { Link } from "react-router-dom";
 export default function SideBar() {
   return (
     <div className=" fixed z-10 flex h-screen w-1/5 flex-col items-center bg-white">
@@ -32,7 +33,11 @@ export default function SideBar() {
           </ListItemIcon>
           <ListItemText primary="Payroll Management" />
         </ListItemButton>
-        <ListItemButton className="my-3 rounded-lg bg-itemSelectedSideBar hover:bg-hoverSelectedSideBar">
+        <ListItemButton
+          className="my-3 rounded-lg bg-itemSelectedSideBar hover:bg-hoverSelectedSideBar hover:text-black"
+          component={Link}
+          to="/employee"
+        >
           <ListItemIcon>
             <img src={iconEmployee} alt="" className="rounded-full bg-selectedIcon p-2 shadow-selected" />
           </ListItemIcon>
@@ -64,6 +69,7 @@ export default function SideBar() {
       <div className="w-4/5">
         <p className="text-left text-2xl font-semibold ">Advance</p>
       </div>
+
       <List sx={{ width: "95%", backgroundColor: "white" }} component="nav" aria-labelledby="nested-list-subheader">
         <ListItemButton className="my-3 rounded-lg hover:bg-hoverItemSideBar ">
           <ListItemIcon>

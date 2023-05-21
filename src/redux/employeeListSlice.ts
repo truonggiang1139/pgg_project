@@ -6,8 +6,7 @@ import { API_PATHS } from "../configs/api";
 
 type initialStateType = {
   employeeList: EmployeeType[];
-  query: string;
-  page: number;
+
   lastPage: number;
   dataFrom: number;
   dataTo: number;
@@ -16,12 +15,10 @@ type initialStateType = {
 };
 const initialState: initialStateType = {
   employeeList: [],
-  query: "",
-  page: 1,
-  lastPage: 1,
-  dataFrom: 1,
-  dataTo: 1,
-  total: 1,
+  lastPage: 0,
+  dataFrom: 0,
+  dataTo: 0,
+  total: 0,
   loading: false
 };
 
@@ -47,14 +44,7 @@ export const getEmployeeList = createAsyncThunk(
 export const employeeListSlice = createSlice({
   name: "employeeList",
   initialState,
-  reducers: {
-    changeQuery(state, action) {
-      state.query = action.payload;
-    },
-    changePage(state, action) {
-      state.page = action.payload;
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getEmployeeList.pending, (state) => {
@@ -70,6 +60,5 @@ export const employeeListSlice = createSlice({
       });
   }
 });
-export const { changeQuery, changePage } = employeeListSlice.actions;
 const employeeListReducer = employeeListSlice.reducer;
 export default employeeListReducer;

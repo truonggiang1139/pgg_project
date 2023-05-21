@@ -6,38 +6,26 @@ import First from "../../assets/First.svg";
 import Next from "../../assets/Next.svg";
 import Previous from "../../assets/Previous.svg";
 import Last from "../../assets/Last.svg";
-import { changePage, getEmployeeList } from "../../redux/employeeListSlice";
-import {
-  dataFromSelector,
-  dataToSelector,
-  lastPageSelector,
-  pageSelector,
-  querySelector,
-  totalSelector
-} from "../../redux/employeeSelector";
+import { dataFromSelector, dataToSelector, lastPageSelector, totalSelector } from "../../redux/employeeSelector";
 import { useLocation, useNavigate } from "react-router-dom";
 const TablePagination = () => {
   const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    dispatch(changePage(page));
-    navigate(`/employee?search=${query}&page=${page}`);
-    dispatch(getEmployeeList({ query, page }));
+    navigate(`/employee?search=${searchValue}&page=${page}`);
   };
   const lastPage = useSelector(lastPageSelector);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search.split("?")[1]);
+  const searchValue = String(searchParams.get("search"));
   const pageValue = Number(searchParams.get("page"));
-  const query = useSelector(querySelector);
   const dataFrom = useSelector(dataFromSelector);
   const dataTo = useSelector(dataToSelector);
   const total = useSelector(totalSelector);
-
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   return (
     <div className="h-55  flex items-center gap-2.5">
       <Pagination
         onChange={handleChangePage}
-        count={lastPage} //
+        count={lastPage}
         page={pageValue}
         shape="rounded"
         showFirstButton

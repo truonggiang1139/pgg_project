@@ -17,10 +17,10 @@ import iconNodata from "../../assets/iconNoData.svg";
 import "../../App.css";
 import classNames from "classnames";
 import TablePagination from "./TablePagination";
-import { RootState, useAppDispatch } from "../../store";
+import { useAppDispatch } from "../../store";
 import { useSelector } from "react-redux";
 import { deleteEmployee, getEmployeeList } from "../../redux/employeeListSlice";
-import { employeeListSelector, loadingSelector, pageSelector, querySelector } from "../../redux/employeeSelector";
+import { employeeListSelector, lastPageSelector, loadingSelector } from "../../redux/employeeSelector";
 
 const DataTable = () => {
   const [selected, setSelected] = useState<number[]>([]);
@@ -29,17 +29,22 @@ const DataTable = () => {
   const dataEmployee = useSelector(employeeListSelector);
   const loading = useSelector(loadingSelector);
   const location = useLocation();
-
   const searchParams = new URLSearchParams(location.search.split("?")[1]);
-
   const searchValue = String(searchParams.get("search"));
-
   const pageValue = Number(searchParams.get("page"));
-  // useEffect(() => {
-  //   dispatch(
-  //     getEmployeeList({ query: searchValue === "null" ? "" : searchValue, page: pageValue == 0 ? 1 : pageValue })
-  //   );
-  // }, [dispatch]);
+  const lastPage = useSelector(lastPageSelector);
+  useEffect(() => {
+    if (lastPage && lastPage < pageValue) {
+      navigate(`/employee?search=${searchValue}&page=${lastPage}`);
+    } else {
+      dispatch(
+        getEmployeeList({
+          query: searchValue === "null" ? "" : searchValue,
+          page: pageValue == 0 ? 1 : pageValue
+        })
+      );
+    }
+  }, [dispatch, searchValue, pageValue, lastPage]);
 
   const handleDelete = async () => {
     await dispatch(deleteEmployee(selected));
@@ -145,7 +150,7 @@ const DataTable = () => {
               <TableRow
                 sx={{
                   "& th": { backgroundColor: "rgb(236,238,240)", border: "1px white solid", fontSize: "14px" },
-                  "& th:first-child": { borderTopLeftRadius: "12px" },
+                  "& th:first-of-type": { borderTopLeftRadius: "12px" },
                   "& th:last-child": { borderTopRightRadius: "12px" }
                 }}
               >
@@ -229,18 +234,18 @@ const DataTable = () => {
                   </TableRow>
                 );
               })}
-              {!loading && dataEmployee.length === 0 && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <img src={iconNodata} />
-                  <div className="mt-30 text-center text-base font-normal leading-5">NoData</div>
-                  <div className="text-gray-500 mt-5 text-center font-sans text-base font-normal leading-6 tracking-tighter">
-                    Your record will be synced here once it ready
-                  </div>
-                </div>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
+        {!loading && dataEmployee.length === 0 && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <img src={iconNodata} />
+            <div className="mt-30 text-center text-base font-normal leading-5">NoData</div>
+            <div className="text-gray-500 mt-5 text-center font-sans text-base font-normal leading-6 tracking-tighter">
+              Your record will be synced here once it ready
+            </div>
+          </div>
+        )}
         {loading && (
           <div className="absolute inset-0 flex h-full  bg-loading">
             <CircularProgress size={32} sx={{ margin: "auto" }} />
