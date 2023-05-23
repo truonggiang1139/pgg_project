@@ -1,4 +1,4 @@
-import { MenuItem, Select, TextField } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
 import axios from "axios";
@@ -45,6 +45,10 @@ export default function PersonalForm() {
     });
     setMarriageStatus(res.data.data);
   };
+  const handleChangeDate = (value: string) => {
+    setPersonalForm({ ...personalForm, dob: value });
+    validateRequiredInput(value, "Dob");
+  };
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>, value: string) => {
     setPersonalForm({ ...personalForm, [value]: e.target.value });
     validateRequiredInput(e.target.value, value.charAt(0).toUpperCase() + value.slice(1));
@@ -62,9 +66,7 @@ export default function PersonalForm() {
       setErrorMessage({ ...errorMessage, [`error${target}`]: "" });
     }
   };
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.target.value = event.target.value.replace(/\D/g, "");
-  };
+
   useEffect(() => {
     getDataMarriage();
   }, []);
@@ -72,9 +74,9 @@ export default function PersonalForm() {
     <form className="flex justify-between px-3">
       <div className="leftForm flex w-48% flex-col">
         <CustomInput
-          handleInputChange={null}
           label="Name"
           name="name"
+          type="text"
           value={personalForm.name}
           errorMessage={errorMessage.errorName}
           handleChangeValue={handleChangeValue}
@@ -122,16 +124,21 @@ export default function PersonalForm() {
           <label htmlFor="name">
             Date of birth<span className="text-xl text-red-500">*</span>
           </label>
-          <DatePick />
+          <DatePick
+            value={personalForm.dob}
+            errorMessage={errorMessage.errorDob}
+            handleChangeDate={handleChangeDate}
+            validateRequiredInput={validateRequiredInput}
+          />
         </div>
         <div className=" mb-4 flex items-center justify-between">
           <label htmlFor="name">Place of birth</label>
           <input type="text" className="flex  h-12 w-3/5 flex-col rounded-md bg-input px-2 py-4 outline-none" />
         </div>
         <CustomInput
-          handleInputChange={handleInputChange}
           label="KTP No."
           name="ktp_no"
+          type="number"
           value={personalForm.ktp_no}
           errorMessage={errorMessage.errorKtp_no}
           handleChangeValue={handleChangeValue}
@@ -140,11 +147,11 @@ export default function PersonalForm() {
         <CustomInput
           label="National Card ID"
           name="card_number"
+          type="number"
           value={personalForm.card_number}
           errorMessage={errorMessage.errorCard_number}
           handleChangeValue={handleChangeValue}
           validateRequiredInput={validateRequiredInput}
-          handleInputChange={handleInputChange}
         />
         <div className=" mb-4 flex items-center justify-between">
           <label htmlFor="name">Home Address 1</label>
@@ -162,17 +169,13 @@ export default function PersonalForm() {
             Mobile No.
           </label>
           <div className="flex w-3/5 flex-col">
-            <input
-              type="tel"
-              className="h-12  rounded-md bg-input px-2 py-4 outline-none"
-              onInput={handleInputChange}
-            />
+            <input type="number" className="numeric-input  h-12 rounded-md bg-input px-2 py-4  outline-none" />
           </div>
         </div>
         <div className=" mb-4 flex items-center justify-between">
           <label className="text-left  ">Tel No.</label>
           <div className="flex w-3/5 flex-col">
-            <input type="text" className="h-12  rounded-md bg-input px-2 py-4 outline-none" />
+            <input type="number" className="numeric-input h-12  rounded-md bg-input px-2 py-4 outline-none" />
           </div>
         </div>
         <div className=" mb-4 flex items-center justify-between">
