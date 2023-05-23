@@ -1,14 +1,13 @@
 import { Typography } from "@mui/material";
 import React, { useEffect } from "react";
+import PersonalForm from "./PersonalForm";
 
 function PersonaIInfor() {
   useEffect(() => {
-    return () => {
-      console.log("first");
-    };
+    return () => {};
   }, []);
   return (
-    <div className="mt-3 h-screen w-full rounded-xl bg-dataTable  p-2 px-4">
+    <div className="mt-3 w-full rounded-xl bg-dataTable  p-6 px-4">
       <header className="flex  items-center justify-between">
         <Typography variant="h6">Personal Information</Typography>
         <div className="text-sm">
@@ -24,6 +23,7 @@ function PersonaIInfor() {
           borderColor: "rgba(193, 200, 205, 0.24)"
         }}
       />
+      <PersonalForm />
     </div>
   );
 }

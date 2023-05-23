@@ -26,7 +26,7 @@ export default function HomePage() {
     }
   }, [query]);
   return (
-    <div className="flex flex-col ">
+    <div className="flex min-h-screen flex-col ">
       <header className="fixed left-0 right-0 top-0 z-30 flex h-16 flex-row bg-white px-8 py-2 shadow-md ">
         <div className="flex items-center">
           <img src={logo} alt="" className="mr-3 h-9 w-9" />

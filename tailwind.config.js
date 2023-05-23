@@ -10,7 +10,8 @@ module.exports = {
         320: "320px",
         348: "348px",
         450: "450px",
-        "1/5": "20%"
+        "1/5": "20%",
+        "48%": "48%"
       },
 
       height: {
@@ -20,6 +21,7 @@ module.exports = {
         600: "600px"
       },
       colors: {
+        input: "rgb(241,243,245)",
         tab: "rgb(237,246,255)",
         textTab: "rgb(0, 145, 255)",
         tabSelected: "rgb(0,145,255)",

@@ -14,7 +14,7 @@ import deleteIconDisable from "../../assets/iconDeleteDisable.svg";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CircularProgress from "@mui/material/CircularProgress";
 import iconNodata from "../../assets/iconNoData.svg";
-import "../../App.css";
+import "../../App.scss";
 import classNames from "classnames";
 import TablePagination from "./TablePagination";
 import { useAppDispatch } from "../../store";
@@ -48,7 +48,7 @@ const DataTable = () => {
 
   const handleDelete = async () => {
     await dispatch(deleteEmployee(selected));
-    await dispatch(getEmployeeList({ query: "", page: 1 }));
+    await dispatch(getEmployeeList({ query: searchValue, page: pageValue }));
     setSelected([]);
   };
   const columns = [

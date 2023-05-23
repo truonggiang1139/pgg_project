@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
+import "./App.scss";
 import LoginPage from "./modules/auth/pages/LoginPage";
 import { ROUTES } from "./configs/routes";
 import PrivateRoute from "./PrivateRoute";
