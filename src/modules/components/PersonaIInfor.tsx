@@ -1,11 +1,9 @@
 import { Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PersonalForm from "./PersonalForm";
-import { personalFormType } from "../../constants/type";
-type PersonaIInforType = {
-  personalForm: personalFormType;
-};
-function PersonaIInfor({ personalForm }: PersonaIInforType) {
+import { personalContext } from "../pages/CreateOrUpdatePage";
+
+function PersonaIInfor() {
   return (
     <div className="mt-3 w-full rounded-xl bg-dataTable  p-6 px-4">
       <header className="flex  items-center justify-between">
@@ -23,7 +21,7 @@ function PersonaIInfor({ personalForm }: PersonaIInforType) {
           borderColor: "rgba(193, 200, 205, 0.24)"
         }}
       />
-      <PersonalForm form={personalForm} value="ddd" />
+      <PersonalForm />
     </div>
   );
 }

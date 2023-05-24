@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 import SideBar from "../components/SideBar";
 import BreadCrumbs from "../components/BreadCrumbs";
+import Cookies from "js-cookie";
 import logo from "../../assets/Rectangle 4.svg";
 import { Button } from "@mui/material";
 import { CustomTabs } from "../../CustomStyle/StyleTabs";
@@ -12,10 +13,64 @@ import SalarynWages from "../components/SalarynWages";
 import Others from "../components/Others";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { marriageType, personalFormType } from "../../constants/type";
+import axios from "axios";
+
+type personalType = {
+  personalForm: personalFormType;
+  marriageStatus: marriageType[];
+};
+export const personalContext = createContext<personalType>({
+  personalForm: {
+    name: "",
+    gender: "",
+    mother_name: "",
+    dob: "",
+    pob: "",
+    ktp_no: "",
+    nc_id: 0,
+    home_address_1: "",
+    home_address_2: "",
+    mobile_no: 0,
+    tel_no: 0,
+    marriage_id: 0,
+    card_number: "",
+    bank_account_no: 0,
+    bank_name: "",
+    family_card_number: 0,
+    safety_insurance_no: 0,
+    health_insurance_no: 0
+  },
+  marriageStatus: [
+    {
+      code: "MK01",
+      company_id: 1,
+      created_at: "2023-04-27T09:41:28.000000Z",
+      id: 3,
+      name: "Married with 1 kid",
+      updated_at: null
+    }
+  ]
+});
 export default function CreateOrUpdatePage() {
   const [value, setValue] = useState(0);
+
+  const [marriageStatus, setMarriageStatus] = useState<marriageType[]>([]);
   const errorPersonalForm = useSelector((state: RootState) => state.employee.personFormError);
   const personalForm = useSelector((state: RootState) => state.employee.personalForm);
+  const personalValueContext = useMemo(() => {
+    return { personalForm, marriageStatus };
+  }, []);
+
+  const getDataMarriage = async () => {
+    const res = await axios.get("https://api-training.hrm.div4.pgtest.co/api/v1/marriage", {
+      headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+    });
+    setMarriageStatus(res.data.data);
+  };
+  useEffect(() => {
+    getDataMarriage();
+  }, []);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -45,7 +100,11 @@ export default function CreateOrUpdatePage() {
               <CustomeTab label="Salary & Wages" />
               <CustomeTab label="Others" />
             </CustomTabs>
-            {value == 0 && <PersonaIInfor personalForm={personalForm} />}
+            {value == 0 && (
+              <personalContext.Provider value={personalValueContext}>
+                <PersonaIInfor />
+              </personalContext.Provider>
+            )}
             {value == 1 && <ContractInfor />}
             {value == 2 && <EmploymentDetail />}
             {value == 3 && <SalarynWages />}

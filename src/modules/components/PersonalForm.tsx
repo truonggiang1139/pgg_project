@@ -1,5 +1,5 @@
 import { MenuItem, Select } from "@mui/material";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -11,18 +11,11 @@ import CustomInput from "./CustomInput";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store";
 import { putPersonalForm } from "../../redux/employeeSlice";
-type PersonalFormType = {
-  form: personalFormType;
-  value: string;
-};
+import { personalContext } from "../pages/CreateOrUpdatePage";
 
-export default function PersonaIInfor(props: PersonalFormType) {
-  console.log(props.form);
-
-  return <div></div>;
-}
-/*{
-  const [marriageStatus, setMarriageStatus] = useState([]);
+export default function PersonaIInfor() {
+  const { marriageStatus } = useContext(personalContext);
+  const [personalForm, setPersonalForm] = useState(useContext(personalContext).personalForm);
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState({
     errorName: "",
@@ -43,12 +36,6 @@ export default function PersonaIInfor(props: PersonalFormType) {
   const familyCardRef = useRef<HTMLInputElement | null>(null);
   const safeInsRef = useRef<HTMLInputElement | null>(null);
   const healthInsRef = useRef<HTMLInputElement | null>(null);
-  const getDataMarriage = async () => {
-    const res = await axios.get("https://api-training.hrm.div4.pgtest.co/api/v1/marriage", {
-      headers: { Authorization: `Bearer ${Cookies.get("token")}` }
-    });
-    setMarriageStatus(res.data.data);
-  };
   const handleChangeDate = (value: string) => {
     setPersonalForm({ ...personalForm, dob: value });
     validateRequiredInput(value, "Dob");
@@ -70,9 +57,7 @@ export default function PersonaIInfor(props: PersonalFormType) {
       setErrorMessage({ ...errorMessage, [`error${target}`]: "" });
     }
   };
-  useEffect(() => {
-    getDataMarriage();
-  }, []);
+
   useLayoutEffect(() => {
     const motherNameInput = motherNameRef.current;
     const pobInput = pobRef.current;
@@ -332,4 +317,3 @@ export default function PersonaIInfor(props: PersonalFormType) {
     </form>
   );
 }
-*/

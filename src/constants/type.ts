@@ -129,3 +129,12 @@ export type personalFormType = {
   safety_insurance_no: number;
   health_insurance_no: number;
 };
+
+export type marriageType = {
+  code: string;
+  company_id: number;
+  created_at: string;
+  id: number;
+  name: string;
+  updated_at: null;
+};
