@@ -1,7 +1,6 @@
 import { Pagination, PaginationItem } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import { RootState, useAppDispatch } from "../../store";
 import First from "../../assets/First.svg";
 import Next from "../../assets/Next.svg";
 import Previous from "../../assets/Previous.svg";

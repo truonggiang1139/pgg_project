@@ -10,8 +10,13 @@ import ContractInfor from "../components/ContractInfor";
 import EmploymentDetail from "../components/EmploymentDetail";
 import SalarynWages from "../components/SalarynWages";
 import Others from "../components/Others";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 export default function CreateOrUpdatePage() {
   const [value, setValue] = useState(0);
+  const errorPersonalForm = useSelector((state: RootState) => state.employee.personFormError);
+  const personalForm = useSelector((state: RootState) => state.employee.personalForm);
+
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
@@ -34,13 +39,13 @@ export default function CreateOrUpdatePage() {
               <Button>Add </Button>
             </div>
             <CustomTabs value={value} onChange={handleChange}>
-              <CustomeTab label="Employee Information" />
-              <CustomeTab label="Contract Information" />
+              <CustomeTab label="Employee Information" data-value={errorPersonalForm} />
+              <CustomeTab label="Contract Information" data-value={true} />
               <CustomeTab label="Employment Details" />
               <CustomeTab label="Salary & Wages" />
               <CustomeTab label="Others" />
             </CustomTabs>
-            {value == 0 && <PersonaIInfor />}
+            {value == 0 && <PersonaIInfor personalForm={personalForm} />}
             {value == 1 && <ContractInfor />}
             {value == 2 && <EmploymentDetail />}
             {value == 3 && <SalarynWages />}
