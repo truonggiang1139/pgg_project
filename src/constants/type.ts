@@ -116,18 +116,18 @@ export type personalFormType = {
   dob: string;
   pob: string;
   ktp_no: string;
-  nc_id: number;
+  nc_id: string;
   home_address_1: string;
   home_address_2: string;
-  mobile_no: number;
-  tel_no: number;
-  marriage_id: number;
+  mobile_no: string;
+  tel_no: string;
+  marriage_id: string;
   card_number: string;
-  bank_account_no: number;
+  bank_account_no: string;
   bank_name: string;
-  family_card_number: number;
-  safety_insurance_no: number;
-  health_insurance_no: number;
+  family_card_number: string;
+  safety_insurance_no: string;
+  health_insurance_no: string;
 };
 
 export type marriageType = {

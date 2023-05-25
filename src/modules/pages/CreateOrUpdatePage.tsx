@@ -1,9 +1,9 @@
-import React, { createContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import SideBar from "../components/SideBar";
 import BreadCrumbs from "../components/BreadCrumbs";
 import Cookies from "js-cookie";
 import logo from "../../assets/Rectangle 4.svg";
-import { Button } from "@mui/material";
+import { Button, SelectChangeEvent, TextField } from "@mui/material";
 import { CustomTabs } from "../../CustomStyle/StyleTabs";
 import { CustomeTab } from "../../CustomStyle/StyleTab";
 import PersonaIInfor from "../components/PersonaIInfor";
@@ -15,10 +15,34 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { marriageType, personalFormType } from "../../constants/type";
 import axios from "axios";
-
+import { styled } from "@mui/material";
+const StyledFilledInput = styled(TextField)({
+  width: "308px",
+  borderRadius: "6px",
+  backgroundColor: "rgb(241, 243, 245)",
+  "& .MuiFilledInput-input": {
+    padding: "12px",
+    paddingLeft: "0"
+  },
+  "&.Mui-focused": {
+    backgroundColor: "rgba(0, 0, 0, 0.06)"
+  },
+  "&.MuiFilledInput-root:hover": {
+    backgroundColor: "rgb(241, 243, 245)"
+  },
+  "& .MuiTypography-root": {
+    color: "rgb(0, 106, 220)"
+  }
+});
 type personalType = {
   personalForm: personalFormType;
   marriageStatus: marriageType[];
+  handleChangeValuePersonalForm: (
+    e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<string> | string,
+    target: string
+  ) => void;
+  errorMessage: personalFormType;
+  validatePersonalForm: (value: string, target: string) => void;
 };
 export const personalContext = createContext<personalType>({
   personalForm: {
@@ -28,18 +52,18 @@ export const personalContext = createContext<personalType>({
     dob: "",
     pob: "",
     ktp_no: "",
-    nc_id: 0,
+    nc_id: "",
     home_address_1: "",
     home_address_2: "",
-    mobile_no: 0,
-    tel_no: 0,
-    marriage_id: 0,
+    mobile_no: "",
+    tel_no: "",
+    marriage_id: "",
     card_number: "",
-    bank_account_no: 0,
+    bank_account_no: "",
     bank_name: "",
-    family_card_number: 0,
-    safety_insurance_no: 0,
-    health_insurance_no: 0
+    family_card_number: "",
+    safety_insurance_no: "",
+    health_insurance_no: ""
   },
   marriageStatus: [
     {
@@ -50,17 +74,84 @@ export const personalContext = createContext<personalType>({
       name: "Married with 1 kid",
       updated_at: null
     }
-  ]
+  ],
+  handleChangeValuePersonalForm: () => {},
+  errorMessage: {
+    name: "",
+    gender: "",
+    mother_name: "",
+    dob: "",
+    pob: "",
+    ktp_no: "",
+    nc_id: "",
+    home_address_1: "",
+    home_address_2: "",
+    mobile_no: "",
+    tel_no: "",
+    marriage_id: "",
+    card_number: "",
+    bank_account_no: "",
+    bank_name: "",
+    family_card_number: "",
+    safety_insurance_no: "",
+    health_insurance_no: ""
+  },
+  validatePersonalForm: () => {}
 });
 export default function CreateOrUpdatePage() {
-  const [value, setValue] = useState(0);
-
+  const [tab, setTab] = useState(0);
   const [marriageStatus, setMarriageStatus] = useState<marriageType[]>([]);
   const errorPersonalForm = useSelector((state: RootState) => state.employee.personFormError);
-  const personalForm = useSelector((state: RootState) => state.employee.personalForm);
-  const personalValueContext = useMemo(() => {
-    return { personalForm, marriageStatus };
+  const [personalForm, setPersonalForm] = useState(useSelector((state: RootState) => state.employee.personalForm));
+  const [errorMessage, setErrorMessage] = useState({
+    name: "",
+    gender: "",
+    mother_name: "",
+    dob: "",
+    pob: "",
+    ktp_no: "",
+    nc_id: "",
+    home_address_1: "",
+    home_address_2: "",
+    mobile_no: "",
+    tel_no: "",
+    marriage_id: "",
+    card_number: "",
+    bank_account_no: "",
+    bank_name: "",
+    family_card_number: "",
+    safety_insurance_no: "",
+    health_insurance_no: ""
+  });
+  const validatePersonalForm = useCallback((value: string, target: string) => {
+    if (
+      value.length === 0 &&
+      (target === "name" || target === "gender" || target == "dob" || target === "ktp_no" || target === "nc_id")
+    ) {
+      setErrorMessage((prev) => ({ ...prev, [target]: `Please input ${target}` }));
+    } else if (value.length > 50) {
+      setErrorMessage((prev) => ({ ...prev, [target]: "Maximum length is 50 characters" }));
+    } else {
+      setErrorMessage((prev) => ({ ...prev, [target]: "" }));
+    }
   }, []);
+
+  const handleChangeValuePersonalForm = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<string> | string, target: string) => {
+      let value: string;
+      if (typeof e === "object" && "target" in e) {
+        value = e.target.value;
+      } else {
+        value = e;
+      }
+      setPersonalForm((prev) => ({ ...prev, [target]: value }));
+    },
+    []
+  );
+
+  const personalValueContext = useMemo(() => {
+    return { personalForm, marriageStatus, handleChangeValuePersonalForm, errorMessage, validatePersonalForm };
+  }, [personalForm, marriageStatus, handleChangeValuePersonalForm, errorMessage, validatePersonalForm]);
 
   const getDataMarriage = async () => {
     const res = await axios.get("https://api-training.hrm.div4.pgtest.co/api/v1/marriage", {
@@ -72,8 +163,24 @@ export default function CreateOrUpdatePage() {
     getDataMarriage();
   }, []);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+  const handleChange = (event: React.ChangeEvent<{}>, newTab: number) => {
+    setTab(newTab);
+  };
+  const [inputValue, setInputValue] = useState("");
+  const [error, setError] = useState(false);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setInputValue(value);
+    setError(!validateInput(value));
+  };
+
+  const validateInput = (value: string): boolean => {
+    const isNotEmpty: boolean = value.trim() !== "";
+    const hasValidLength: boolean = value.length <= 10;
+    // Add more validation rules as needed
+
+    return isNotEmpty && hasValidLength;
   };
 
   return (
@@ -93,22 +200,33 @@ export default function CreateOrUpdatePage() {
               <div className=" text-left text-3xl">Employee Management</div>
               <Button>Add </Button>
             </div>
-            <CustomTabs value={value} onChange={handleChange}>
+            <CustomTabs value={tab} onChange={handleChange}>
               <CustomeTab label="Employee Information" data-value={errorPersonalForm} />
               <CustomeTab label="Contract Information" data-value={true} />
               <CustomeTab label="Employment Details" />
               <CustomeTab label="Salary & Wages" />
               <CustomeTab label="Others" />
             </CustomTabs>
-            {value == 0 && (
+            {tab == 0 && (
               <personalContext.Provider value={personalValueContext}>
                 <PersonaIInfor />
               </personalContext.Provider>
             )}
-            {value == 1 && <ContractInfor />}
-            {value == 2 && <EmploymentDetail />}
-            {value == 3 && <SalarynWages />}
-            {value == 4 && <Others />}
+            {tab == 1 && <ContractInfor />}
+            {tab == 2 && <EmploymentDetail />}
+            {tab == 3 && <SalarynWages />}
+            {tab == 4 && <Others />}
+            <TextField
+              label="My Text Field"
+              value={inputValue}
+              error={error}
+              helperText={error ? "Invalid input. Please check the rules." : "Enter a maximum of 10 characters."}
+              inputProps={{
+                maxLength: 10
+                // Add more rules as needed
+              }}
+              onChange={handleInputChange}
+            />
           </div>
           <footer className="sticky top-full p-8 text-xs">Copyright © 2022. All Rights Reserved</footer>
         </div>

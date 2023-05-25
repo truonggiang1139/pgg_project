@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../../App.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import iconCalendar from "../../assets/iconCalendar.svg";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import classNames from "classnames";
+import { SelectChangeEvent } from "@mui/material";
+import { personalContext } from "../pages/CreateOrUpdatePage";
 
 type propsDatePick = {
   value: string;
-  errorMessage: string;
-  handleChangeDate: (value: string) => void;
-  validateRequiredInput: (value: string | number, target: string) => void;
 };
 export default function DatePick(props: propsDatePick) {
-  const { value, errorMessage, handleChangeDate, validateRequiredInput } = props;
+  const { value } = props;
+  const { handleChangeValuePersonalForm, validatePersonalForm, errorMessage } = useContext(personalContext);
   return (
     <div
       className={classNames(
         " relative  flex h-12 w-3/5 flex-row items-center rounded-md bg-input px-2 py-4 outline-none ",
         {
-          "border border-red-300 bg-red-50": errorMessage
+          "border border-red-300 bg-red-50": errorMessage.dob
         }
       )}
     >
@@ -27,14 +27,15 @@ export default function DatePick(props: propsDatePick) {
         selected={value ? new Date(value) : null}
         dateFormat="yyyy-MM-dd"
         className={classNames("  h-8 w-full bg-input px-8 pt-2 outline-none  ", {
-          " bg-red-50": errorMessage
+          " bg-red-50": errorMessage.dob
         })}
         isClearable
         onChange={(date: Date | null) => {
           const value = date !== null ? date.toISOString().slice(0, 10) : "";
-          handleChangeDate(value);
+          handleChangeValuePersonalForm(value, "dob");
+          validatePersonalForm(value, "dob");
         }}
-        onBlur={() => validateRequiredInput(value, "Dob")}
+        onBlur={() => validatePersonalForm(value, "dob")}
       />
       <span className=" absolute left-3 top-4">
         <img src={iconCalendar} alt="" />

@@ -16,18 +16,18 @@ const initialState: initialStateType = {
     dob: "",
     pob: "",
     ktp_no: "",
-    nc_id: 0,
+    nc_id: "",
     home_address_1: "",
     home_address_2: "",
-    mobile_no: 0,
-    tel_no: 0,
-    marriage_id: 0,
+    mobile_no: "",
+    tel_no: "",
+    marriage_id: "",
     card_number: "",
-    bank_account_no: 0,
+    bank_account_no: "",
     bank_name: "",
-    family_card_number: 0,
-    safety_insurance_no: 0,
-    health_insurance_no: 0
+    family_card_number: "",
+    safety_insurance_no: "",
+    health_insurance_no: ""
   },
   personFormError: true
 };

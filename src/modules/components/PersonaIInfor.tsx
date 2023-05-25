@@ -1,7 +1,6 @@
 import { Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import PersonalForm from "./PersonalForm";
-import { personalContext } from "../pages/CreateOrUpdatePage";
 
 function PersonaIInfor() {
   return (
