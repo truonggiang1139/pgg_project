@@ -12,28 +12,12 @@ import EmploymentDetail from "../components/EmploymentDetail";
 import SalarynWages from "../components/SalarynWages";
 import Others from "../components/Others";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState, useAppDispatch } from "../../store";
 import { marriageType, personalFormType } from "../../constants/type";
 import axios from "axios";
-import { styled } from "@mui/material";
-const StyledFilledInput = styled(TextField)({
-  width: "308px",
-  borderRadius: "6px",
-  backgroundColor: "rgb(241, 243, 245)",
-  "& .MuiFilledInput-input": {
-    padding: "12px",
-    paddingLeft: "0"
-  },
-  "&.Mui-focused": {
-    backgroundColor: "rgba(0, 0, 0, 0.06)"
-  },
-  "&.MuiFilledInput-root:hover": {
-    backgroundColor: "rgb(241, 243, 245)"
-  },
-  "& .MuiTypography-root": {
-    color: "rgb(0, 106, 220)"
-  }
-});
+import { putPersonalForm } from "../../redux/employeeSlice";
+import { API_PATHS } from "../../configs/api";
+import iconError from "../../assets/iconError.svg";
 type personalType = {
   personalForm: personalFormType;
   marriageStatus: marriageType[];
@@ -42,7 +26,7 @@ type personalType = {
     target: string
   ) => void;
   errorMessage: personalFormType;
-  validatePersonalForm: (value: string, target: string) => void;
+  validatePersonalForm: (value: string, target: string, required: string, length: number) => void;
 };
 export const personalContext = createContext<personalType>({
   personalForm: {
@@ -101,6 +85,7 @@ export const personalContext = createContext<personalType>({
 export default function CreateOrUpdatePage() {
   const [tab, setTab] = useState(0);
   const [marriageStatus, setMarriageStatus] = useState<marriageType[]>([]);
+  const dispatch = useAppDispatch();
   const errorPersonalForm = useSelector((state: RootState) => state.employee.personFormError);
   const [personalForm, setPersonalForm] = useState(useSelector((state: RootState) => state.employee.personalForm));
   const [errorMessage, setErrorMessage] = useState({
@@ -123,14 +108,11 @@ export default function CreateOrUpdatePage() {
     safety_insurance_no: "",
     health_insurance_no: ""
   });
-  const validatePersonalForm = useCallback((value: string, target: string) => {
-    if (
-      value.length === 0 &&
-      (target === "name" || target === "gender" || target == "dob" || target === "ktp_no" || target === "nc_id")
-    ) {
-      setErrorMessage((prev) => ({ ...prev, [target]: `Please input ${target}` }));
-    } else if (value.length > 50) {
-      setErrorMessage((prev) => ({ ...prev, [target]: "Maximum length is 50 characters" }));
+  const validatePersonalForm = useCallback((value: string, target: string, required: string, length: number) => {
+    if (value.length === 0 && required) {
+      setErrorMessage((prev) => ({ ...prev, [target]: `Please input ${required}` }));
+    } else if (value.length > length) {
+      setErrorMessage((prev) => ({ ...prev, [target]: `Maximum length is ${length} characters` }));
     } else {
       setErrorMessage((prev) => ({ ...prev, [target]: "" }));
     }
@@ -154,35 +136,24 @@ export default function CreateOrUpdatePage() {
   }, [personalForm, marriageStatus, handleChangeValuePersonalForm, errorMessage, validatePersonalForm]);
 
   const getDataMarriage = async () => {
-    const res = await axios.get("https://api-training.hrm.div4.pgtest.co/api/v1/marriage", {
+    const res = await axios.get(API_PATHS.marriage, {
       headers: { Authorization: `Bearer ${Cookies.get("token")}` }
     });
     setMarriageStatus(res.data.data);
   };
   useEffect(() => {
     getDataMarriage();
+    setTimeout(() => {
+      dispatch(putPersonalForm(personalForm));
+    }, 2000);
   }, []);
 
   const handleChange = (event: React.ChangeEvent<{}>, newTab: number) => {
+    if (tab === 0) {
+      dispatch(putPersonalForm(personalForm));
+    }
     setTab(newTab);
   };
-  const [inputValue, setInputValue] = useState("");
-  const [error, setError] = useState(false);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setInputValue(value);
-    setError(!validateInput(value));
-  };
-
-  const validateInput = (value: string): boolean => {
-    const isNotEmpty: boolean = value.trim() !== "";
-    const hasValidLength: boolean = value.length <= 10;
-    // Add more validation rules as needed
-
-    return isNotEmpty && hasValidLength;
-  };
-
   return (
     <div className="flex flex-col ">
       <header className="fixed left-0 right-0 top-0 z-30 flex h-16 flex-row bg-white px-8 py-2 shadow-md ">
@@ -201,7 +172,22 @@ export default function CreateOrUpdatePage() {
               <Button>Add </Button>
             </div>
             <CustomTabs value={tab} onChange={handleChange}>
-              <CustomeTab label="Employee Information" data-value={errorPersonalForm} />
+              <CustomeTab
+                label={
+                  errorPersonalForm ? (
+                    <div className="flex">
+                      Employee Information
+                      <span className="ml-2">
+                        <img src={iconError} />
+                      </span>
+                    </div>
+                  ) : (
+                    "Employee Information"
+                  )
+                }
+                data-value={errorPersonalForm}
+              />
+
               <CustomeTab label="Contract Information" data-value={true} />
               <CustomeTab label="Employment Details" />
               <CustomeTab label="Salary & Wages" />
@@ -216,17 +202,6 @@ export default function CreateOrUpdatePage() {
             {tab == 2 && <EmploymentDetail />}
             {tab == 3 && <SalarynWages />}
             {tab == 4 && <Others />}
-            <TextField
-              label="My Text Field"
-              value={inputValue}
-              error={error}
-              helperText={error ? "Invalid input. Please check the rules." : "Enter a maximum of 10 characters."}
-              inputProps={{
-                maxLength: 10
-                // Add more rules as needed
-              }}
-              onChange={handleInputChange}
-            />
           </div>
           <footer className="sticky top-full p-8 text-xs">Copyright © 2022. All Rights Reserved</footer>
         </div>

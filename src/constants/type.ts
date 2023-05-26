@@ -138,3 +138,7 @@ export type marriageType = {
   name: string;
   updated_at: null;
 };
+export type genderType = {
+  id: number;
+  name: string;
+};

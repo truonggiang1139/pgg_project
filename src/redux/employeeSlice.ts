@@ -29,7 +29,7 @@ const initialState: initialStateType = {
     safety_insurance_no: "",
     health_insurance_no: ""
   },
-  personFormError: true
+  personFormError: false
 };
 export const employeeSlice = createSlice({
   name: "employee",
@@ -38,11 +38,11 @@ export const employeeSlice = createSlice({
     putPersonalForm: (state, action: PayloadAction<personalFormType>) => {
       state.personalForm = action.payload;
       state.personFormError = !(
-        !!action.payload.name &&
-        !!action.payload.gender &&
-        !!action.payload.dob &&
-        !!action.payload.ktp_no &&
-        !!action.payload.nc_id
+        !!action.payload.name.length &&
+        !!action.payload.gender.length &&
+        !!action.payload.dob.length &&
+        !!action.payload.ktp_no.length &&
+        !!action.payload.nc_id.length
       );
     }
   }
