@@ -9,15 +9,17 @@ import classNames from "classnames";
 import { personalContext } from "../pages/CreateOrUpdatePage";
 
 type propsDatePick = {
+  label: string;
   value: string;
   errorMessage: string;
 };
-function DatePick({ value, errorMessage }: propsDatePick) {
+function DatePick({ value, errorMessage, label }: propsDatePick) {
   const { handleChangeValuePersonalForm, validatePersonalForm } = useContext(personalContext);
   return (
     <div className=" mb-4 flex items-center justify-between">
       <label htmlFor="name">
-        Date of birth<span className="text-xl text-red-500">*</span>
+        {label}
+        <span className="text-xl text-red-500">*</span>
       </label>
       <div
         className={classNames(

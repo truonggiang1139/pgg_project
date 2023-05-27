@@ -1,9 +1,5 @@
-import { MenuItem, Select } from "@mui/material";
 import React, { useContext, useMemo } from "react";
-import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
 import DatePick from "./DatePick";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import classNames from "classnames";
 import { personalContext } from "../pages/CreateOrUpdatePage";
 import InputForm from "./InputForm";
 import SelectForm from "./SelectForm";
@@ -53,7 +49,7 @@ function PersonalForm() {
           required=""
           length={50}
         />
-        <DatePick value={personalForm.dob} errorMessage={errorMessage.dob} />
+        <DatePick label="Date of birth" value={personalForm.dob} errorMessage={errorMessage.dob} />
         <InputForm
           label="Place of birth"
           target="pob"

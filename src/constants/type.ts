@@ -142,3 +142,7 @@ export type genderType = {
   id: number;
   name: string;
 };
+export type employeeType = {
+  id: number;
+  name: string;
+};

@@ -1,6 +1,8 @@
 import { Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import DatePick from "./DatePick";
+import SelectForm from "./SelectForm";
+import PersonalForm from "./PersonalForm";
 
 export default function ContractInfor() {
   useEffect(() => {}, []);
@@ -21,26 +23,20 @@ export default function ContractInfor() {
           borderColor: "rgba(193, 200, 205, 0.24)"
         }}
       />
-      <div>
-        <div className="flex w-48% items-center justify-between">
-          <div>Date Start *</div>
-          <DatePick
+      <form className="flex justify-between px-3">
+        <div className=" flex w-1/3 flex-col">
+          <DatePick label="Date of birth" value="" errorMessage="" />
+          <SelectForm
+            label="Gender"
+            defaultValue="Choose Type"
+            errorMessage={""}
+            required="Gender"
+            target="gender"
             value=""
-            errorMessage=""
-            handleChangeDate={(value: string) => {}}
-            validateRequiredInput={(value: string | number) => {}}
+            selectList={[{ id: 1, name: "1" }]}
           />
         </div>
-        <div className="mt-4 flex w-48% items-center justify-between">
-          <div>Date Start *</div>
-          <DatePick
-            value=""
-            errorMessage=""
-            handleChangeDate={(value: string) => {}}
-            validateRequiredInput={(value: string | number) => {}}
-          />
-        </div>
-      </div>
+      </form>
     </div>
   );
 }

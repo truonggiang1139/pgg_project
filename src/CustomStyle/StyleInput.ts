@@ -10,14 +10,14 @@ export const CustomTextField = styled(Input)(() => ({
   backgroundColor: "rgb(241,243,245)",
   color: "rgba(0, 0, 0, 0.85)",
   "& input[type=number]": {
-    MozAppearance: "textfield"
+    " moz-appearance": "textfield"
   },
   "& input[type=number]::-webkit-outer-spin-button": {
-    webkitAppearance: "none",
+    "webkit-appearance": "none",
     margin: 0
   },
   "& input[type=number]::-webkit-inner-spin-button": {
-    webkitAppearance: "none",
+    "webkit-appearance": "none",
     margin: 0
   },
   "&.Mui-error": {
