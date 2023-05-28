@@ -111,7 +111,7 @@ export type FormEmployee = {
 
 export type personalFormType = {
   name: string;
-  gender: string;
+  gender: number | string;
   mother_name: string;
   dob: string;
   pob: string;

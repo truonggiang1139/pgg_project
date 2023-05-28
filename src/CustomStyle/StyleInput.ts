@@ -9,16 +9,14 @@ export const CustomTextField = styled(Input)(() => ({
   borderRadius: "6px",
   backgroundColor: "rgb(241,243,245)",
   color: "rgba(0, 0, 0, 0.85)",
-  "& input[type=number]": {
-    " moz-appearance": "textfield"
+  "&.Mui-focused": {
+    backgroundColor: "rgba(0, 0, 0, 0.06)"
   },
-  "& input[type=number]::-webkit-outer-spin-button": {
-    "webkit-appearance": "none",
-    margin: 0
+  "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+    display: "none"
   },
-  "& input[type=number]::-webkit-inner-spin-button": {
-    "webkit-appearance": "none",
-    margin: 0
+  "& input[type=tel]": {
+    MozAppearance: "textfield"
   },
   "&.Mui-error": {
     backgroundColor: "rgb(255, 239, 239)",

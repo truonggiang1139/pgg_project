@@ -24,17 +24,37 @@ export const customPaperProps: PaperProps = {
 };
 
 const CustomInputSelect = styled(InputBase)(({ theme }) => ({
+  textTransform: "none",
+  height: "48px",
+  fontWeight: "400",
+  padding: "16px 8px",
+  borderRadius: "6px",
+  backgroundColor: "rgb(241,243,245)",
+  color: "rgba(0, 0, 0, 0.85)",
   // boxShadow: "none",
+  "&.Mui-focused": {
+    backgroundColor: "rgba(0, 0, 0, 0.09) "
+  },
+  "&.Mui-focused:hover": {
+    backgroundColor: "rgba(0, 0, 0, 0.05)"
+  },
   ".MuiOutlinedInput-notchedOutline": {
     // border: "none",
-    borderRadius: "0.25rem"
+    borderRadius: "0.25rem",
+    backgroundColor: "red"
   },
   ".MuiSelect-select": {
     display: "flex",
+    innerWidth: "100%",
+
     borderRadius: "0.25rem",
     marginLeft: "12px",
-    color: "rgb(104, 112, 118)",
     fontWeight: "400"
+  },
+
+  "&.Mui-error": {
+    backgroundColor: "rgb(255, 239, 239)",
+    border: "1px solid rgb(243, 174, 175)"
   }
 }));
 

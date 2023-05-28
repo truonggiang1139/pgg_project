@@ -27,6 +27,7 @@ module.exports = {
         tabSelected: "rgb(0,145,255)",
         white: "rgb(255 255 255)",
         total: "rgb(241, 243, 245)",
+        headerContractForm: "rgb(241, 243, 245)",
         dataTable: "rgb(251,252,253)",
         loading: "rgba(223, 227, 230, 0.3)",
         selectedIcon: "rgb(251, 253, 255)",
@@ -45,7 +46,8 @@ module.exports = {
         black: "rgb(17, 24, 28)",
         red1: "rgb(243, 174, 175)",
         red2: "rgb(255, 239, 239)",
-        required: "rgb(229, 72, 77)"
+        required: "rgb(229, 72, 77)",
+        formContract: "rgb(223, 227, 230)"
       },
       boxShadow: {
         form: "rgba(236, 238, 240, 0.5) 0px 10px 5px",

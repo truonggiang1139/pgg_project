@@ -9,7 +9,7 @@ import { dataFromSelector, dataToSelector, lastPageSelector, totalSelector } fro
 import { useLocation, useNavigate } from "react-router-dom";
 const TablePagination = () => {
   const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    navigate(`/employee?search=${searchValue}&page=${page}`);
+    navigate(`/employee?search=${searchValue === "null" ? "" : searchValue}&page=${page}`);
   };
   const lastPage = useSelector(lastPageSelector);
   const location = useLocation();

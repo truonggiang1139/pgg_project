@@ -39,11 +39,12 @@ export const employeeSlice = createSlice({
       state.personalForm = action.payload;
       state.personFormError = !(
         !!action.payload.name.length &&
-        !!action.payload.gender.length &&
+        action.payload.gender !== "" &&
         !!action.payload.dob.length &&
         !!action.payload.ktp_no.length &&
         !!action.payload.nc_id.length
       );
+      console.log(action.payload);
     }
   }
 });

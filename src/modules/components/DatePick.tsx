@@ -23,7 +23,7 @@ function DatePick({ value, errorMessage, label }: propsDatePick) {
       </label>
       <div
         className={classNames(
-          " relative  flex h-12 w-3/5 flex-row items-center rounded-md bg-input px-2 py-4 outline-none ",
+          " relative  flex h-12 w-3/5 flex-row items-center rounded-md bg-input px-2 py-4 outline-none focus:bg-red-400 ",
           {
             "border border-red-300 bg-red-50": errorMessage
           }

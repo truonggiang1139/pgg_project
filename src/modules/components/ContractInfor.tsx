@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import DatePick from "./DatePick";
 import SelectForm from "./SelectForm";
 import PersonalForm from "./PersonalForm";
+import ContractForm from "./ContractForm";
 
 export default function ContractInfor() {
   useEffect(() => {}, []);
@@ -23,20 +24,25 @@ export default function ContractInfor() {
           borderColor: "rgba(193, 200, 205, 0.24)"
         }}
       />
-      <form className="flex justify-between px-3">
+      <div className="flex justify-between px-3">
         <div className=" flex w-1/3 flex-col">
           <DatePick label="Date of birth" value="" errorMessage="" />
           <SelectForm
-            label="Gender"
+            label="Employee Type"
             defaultValue="Choose Type"
-            errorMessage={""}
-            required="Gender"
+            errorMessage=""
+            required="Employee Type"
             target="gender"
             value=""
-            selectList={[{ id: 1, name: "1" }]}
+            selectList={[
+              { id: 0, name: "Permanent" },
+              { id: 1, name: "Part-time" },
+              { id: 2, name: "Contract" }
+            ]}
           />
         </div>
-      </form>
+      </div>
+      <ContractForm />
     </div>
   );
 }

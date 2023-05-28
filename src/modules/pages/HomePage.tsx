@@ -15,7 +15,7 @@ export default function HomePage() {
   useEffect(() => {
     if (query) {
       const timeoutId = setTimeout(() => {
-        navigate(`/employee?search=${query}&page=${1}`);
+        navigate(`/employee?search=${query === "null" ? "" : query}&page=${1}`);
       }, 1000);
       return () => clearTimeout(timeoutId);
     }

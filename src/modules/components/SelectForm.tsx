@@ -27,9 +27,6 @@ function SelectForm({ label, value, defaultValue, target, errorMessage, required
         <Select
           value={value}
           defaultValue=""
-          className={classNames("h-12  rounded-md bg-input px-2 py-4 outline-none", {
-            "border border-red-300 bg-red-50": !!errorMessage
-          })}
           onChange={(e) => {
             handleChangeValuePersonalForm(e.target.value, target);
             validatePersonalForm(e.target.value, target, required, 50);
@@ -37,6 +34,7 @@ function SelectForm({ label, value, defaultValue, target, errorMessage, required
           onBlur={() => validatePersonalForm(value, target, required, 50)}
           displayEmpty
           IconComponent={ExpandMoreIcon}
+          error={!!errorMessage}
           input={<CustomInputSelect />}
           MenuProps={{
             PaperProps: customPaperProps

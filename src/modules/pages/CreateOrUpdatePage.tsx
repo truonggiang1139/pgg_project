@@ -88,6 +88,7 @@ export default function CreateOrUpdatePage() {
   const dispatch = useAppDispatch();
   const errorPersonalForm = useSelector((state: RootState) => state.employee.personFormError);
   const [personalForm, setPersonalForm] = useState(useSelector((state: RootState) => state.employee.personalForm));
+
   const [errorMessage, setErrorMessage] = useState({
     name: "",
     gender: "",
