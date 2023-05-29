@@ -13,7 +13,7 @@ export default function ContractTable() {
     { field: "Action", headerName: "Action.", width: 200 }
   ];
   return (
-    <TableContainer className="mx-3 h-200">
+    <TableContainer className="mx-3 h-200 ">
       <Table stickyHeader aria-label="sticky table" className="rounded-lg border border-white" size="small">
         <TableHead sx={{ borderRadius: "12px" }}>
           <TableRow
