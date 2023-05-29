@@ -46,7 +46,9 @@ module.exports = {
         black: "rgb(17, 24, 28)",
         red1: "rgb(243, 174, 175)",
         red2: "rgb(255, 239, 239)",
+        red3: "rgba(229, 72, 77, 0.08)",
         required: "rgb(229, 72, 77)",
+
         formContract: "rgb(223, 227, 230)"
       },
       boxShadow: {
@@ -66,7 +68,8 @@ module.exports = {
       },
       minWidth: {
         175: "175px",
-        290: "290px"
+        290: "290px",
+        100: "100px"
       },
       minHeight: {
         600: "600px"

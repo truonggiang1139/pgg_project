@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store";
 import { marriageType, personalFormType } from "../../constants/type";
 import axios from "axios";
-import { putPersonalForm } from "../../redux/employeeSlice";
+import { putPersonalForm, resetForm } from "../../redux/employeeSlice";
 import { API_PATHS } from "../../configs/api";
 import iconError from "../../assets/iconError.svg";
 type personalType = {
@@ -147,6 +147,9 @@ export default function CreateOrUpdatePage() {
     setTimeout(() => {
       dispatch(putPersonalForm(personalForm));
     }, 2000);
+    return () => {
+      dispatch(resetForm());
+    };
   }, []);
 
   const handleChange = (event: React.ChangeEvent<{}>, newTab: number) => {

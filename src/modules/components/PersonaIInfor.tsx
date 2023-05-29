@@ -1,10 +1,6 @@
 import { Typography } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import PersonalForm from "./PersonalForm";
-import { CustomTextField } from "../../CustomStyle/StyleInput";
-import classNames from "classnames";
-import FormHelperText from "@mui/material/FormHelperText";
-import FormControl from "@mui/material/FormControl";
 function PersonaIInfor() {
   return (
     <div className="mt-3 w-full rounded-xl bg-dataTable  p-6 px-4">

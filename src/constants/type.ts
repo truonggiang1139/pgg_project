@@ -129,7 +129,22 @@ export type personalFormType = {
   safety_insurance_no: string;
   health_insurance_no: string;
 };
+export type contractFormType = {
+  contract_start_date: string;
+  contracts: contractsType[];
+  type: string;
+};
 
+export type contractsType = {
+  contract_date: string;
+  created_at: string;
+  deleted_at: null;
+  document: string;
+  employee_id: number;
+  id: number;
+  name: string;
+  updated_at: string;
+};
 export type marriageType = {
   code: string;
   company_id: number;

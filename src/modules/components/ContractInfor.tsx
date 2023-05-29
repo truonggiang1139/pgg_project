@@ -25,7 +25,7 @@ export default function ContractInfor() {
         }}
       />
       <div className="flex justify-between px-3">
-        <div className=" flex w-1/3 flex-col">
+        <div className=" flex w-2/5 flex-col">
           <DatePick label="Date of birth" value="" errorMessage="" />
           <SelectForm
             label="Employee Type"

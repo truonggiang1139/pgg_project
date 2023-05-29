@@ -34,10 +34,10 @@ function PersonalForm() {
         <SelectForm
           label="Gender"
           defaultValue="Choose Gender"
-          errorMessage={errorMessage.gender}
+          errorMessage={String(errorMessage.gender)}
           required="Gender"
           target="gender"
-          value={personalForm.gender}
+          value={String(personalForm.gender)}
           selectList={gender}
         />
         <InputForm
