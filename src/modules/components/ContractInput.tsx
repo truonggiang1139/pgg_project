@@ -10,12 +10,13 @@ export default function ContractInput() {
     const selectedFile = e.target.files && e.target.files[0];
     setFile(selectedFile || null);
   };
+
   return (
     <div className="flex w-3/5  flex-col px-5">
-      <DatePick label="Date of birth" value="" errorMessage="" />
+      <DatePick label="Date of birth" value="" errorMessage="" target={""} />
       <InputForm label="Name" target="name" type="text" errorMessage="" value="" required="Name" length={50} />
 
-      <div className="flex justify-between">
+      <div className="flex flex-wrap justify-between">
         <Button
           variant="contained"
           component="label"
@@ -24,6 +25,7 @@ export default function ContractInput() {
             backgroundColor: "rgb(237, 246, 255)",
             border: "1px dashed",
             width: "48%",
+            marginBottom: "12px",
             boxShadow: "none",
             minWidth: "195px",
             borderRadius: "6px",

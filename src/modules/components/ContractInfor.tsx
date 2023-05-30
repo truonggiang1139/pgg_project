@@ -1,18 +1,32 @@
-import { Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import { FormHelperText, MenuItem, Select, Typography } from "@mui/material";
+import React, { useContext, useEffect, useMemo } from "react";
 import DatePick from "./DatePick";
-import SelectForm from "./SelectForm";
-import PersonalForm from "./PersonalForm";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ContractForm from "./ContractForm";
+import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
+import { employeeType } from "../../constants/type";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import SelectForm from "./SelectForm";
 
 export default function ContractInfor() {
-  useEffect(() => {}, []);
+  const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
+  const errorMessage = useSelector((state: RootState) => state.employee.errorMessage);
+  const selectList: employeeType[] = useMemo(
+    () => [
+      { id: 0, name: "Permanent" },
+      { id: 1, name: "Part-time" },
+      { id: 2, name: "Contract" }
+    ],
+    []
+  );
+
   return (
     <div className="mt-3 w-full rounded-xl bg-dataTable  p-6 px-4">
       <header className="flex  items-center justify-between">
         <Typography variant="h6">Contract Information</Typography>
         <div className="text-sm">
-          Required(<span className="text-base text-red-500 ">*</span>)
+          Required<span className="text-base text-red-500 ">*</span>
         </div>
       </header>
       <hr
@@ -26,19 +40,20 @@ export default function ContractInfor() {
       />
       <div className="flex justify-between px-3">
         <div className=" flex w-2/5 flex-col">
-          <DatePick label="Date of birth" value="" errorMessage="" />
+          <DatePick
+            label="Date of birth"
+            value={employeeForm.contract_start_date}
+            errorMessage={errorMessage.contract_start_date}
+            target="contract_start_date"
+          />
           <SelectForm
             label="Employee Type"
-            defaultValue="Choose Type"
-            errorMessage=""
-            required="Employee Type"
-            target="gender"
-            value=""
-            selectList={[
-              { id: 0, name: "Permanent" },
-              { id: 1, name: "Part-time" },
-              { id: 2, name: "Contract" }
-            ]}
+            value={employeeForm.type}
+            selectList={selectList}
+            defaultValue=""
+            target="type"
+            errorMessage={errorMessage.type}
+            required={"Employee Type"}
           />
         </div>
       </div>

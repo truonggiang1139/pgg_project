@@ -1,12 +1,18 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import DatePick from "./DatePick";
-import { personalContext } from "../pages/CreateOrUpdatePage";
 import InputForm from "./InputForm";
 import SelectForm from "./SelectForm";
-import { genderType } from "../../constants/type";
-
+import { genderType, marriageType } from "../../constants/type";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import axios from "axios";
+import { API_PATHS } from "../../configs/api";
+import Cookies from "js-cookie";
+import { employeeContext } from "../pages/CreateOrUpdatePage";
 function PersonalForm() {
-  const { marriageStatus, personalForm, errorMessage } = useContext(personalContext);
+  const { marriageStatus } = useContext(employeeContext);
+  const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
+  const errorMessage = useSelector((state: RootState) => state.employee.errorMessage);
   const gender: genderType[] = useMemo(() => {
     return [
       {
@@ -19,6 +25,7 @@ function PersonalForm() {
       }
     ];
   }, []);
+
   return (
     <form className="flex justify-between px-3">
       <div className="leftForm flex w-48% flex-col">
@@ -27,7 +34,7 @@ function PersonalForm() {
           target="name"
           type="text"
           errorMessage={errorMessage.name}
-          value={personalForm.name}
+          value={employeeForm.name}
           required="Name"
           length={50}
         />
@@ -37,7 +44,7 @@ function PersonalForm() {
           errorMessage={String(errorMessage.gender)}
           required="Gender"
           target="gender"
-          value={String(personalForm.gender)}
+          value={String(employeeForm.gender)}
           selectList={gender}
         />
         <InputForm
@@ -45,17 +52,17 @@ function PersonalForm() {
           target="mother_name"
           type="text"
           errorMessage={errorMessage.mother_name}
-          value={personalForm.mother_name}
+          value={employeeForm.mother_name}
           required=""
           length={50}
         />
-        <DatePick label="Date of birth" value={personalForm.dob} errorMessage={errorMessage.dob} />
+        <DatePick label="Date of birth" value={employeeForm.dob} errorMessage={errorMessage.dob} target="dob" />
         <InputForm
           label="Place of birth"
           target="pob"
           type="text"
           errorMessage={errorMessage.pob}
-          value={personalForm.pob}
+          value={employeeForm.pob}
           required=""
           length={50}
         />
@@ -64,7 +71,7 @@ function PersonalForm() {
           target="ktp_no"
           type="number"
           errorMessage={errorMessage.ktp_no}
-          value={personalForm.ktp_no}
+          value={employeeForm.ktp_no}
           required="KTP No"
           length={20}
         />
@@ -73,7 +80,7 @@ function PersonalForm() {
           target="nc_id"
           type="number"
           errorMessage={errorMessage.nc_id}
-          value={personalForm.nc_id}
+          value={employeeForm.nc_id}
           required="National Card ID"
           length={20}
         />
@@ -82,7 +89,7 @@ function PersonalForm() {
           target="home_address_1"
           type="text"
           errorMessage={errorMessage.home_address_1}
-          value={personalForm.home_address_1}
+          value={employeeForm.home_address_1}
           required=""
           length={100}
         />
@@ -91,7 +98,7 @@ function PersonalForm() {
           target="home_address_2"
           type="text"
           errorMessage={errorMessage.home_address_2}
-          value={personalForm.home_address_2}
+          value={employeeForm.home_address_2}
           required=""
           length={100}
         />
@@ -103,7 +110,7 @@ function PersonalForm() {
           target="mobile_no"
           type="number"
           errorMessage={errorMessage.mobile_no}
-          value={personalForm.mobile_no}
+          value={employeeForm.mobile_no}
           required=""
           length={20}
         />
@@ -112,7 +119,7 @@ function PersonalForm() {
           target="tel_no"
           type="number"
           errorMessage={errorMessage.tel_no}
-          value={personalForm.tel_no}
+          value={employeeForm.tel_no}
           required=""
           length={20}
         />
@@ -122,7 +129,7 @@ function PersonalForm() {
           errorMessage={errorMessage.marriage_id}
           required=""
           target="marriage_id"
-          value={personalForm.marriage_id}
+          value={employeeForm.marriage_id}
           selectList={marriageStatus}
         />
         <InputForm
@@ -130,7 +137,7 @@ function PersonalForm() {
           target="card_number"
           type="number"
           errorMessage={errorMessage.card_number}
-          value={personalForm.card_number}
+          value={employeeForm.card_number}
           required=""
           length={30}
         />
@@ -139,7 +146,7 @@ function PersonalForm() {
           target="bank_account_no"
           type="number"
           errorMessage={errorMessage.bank_account_no}
-          value={personalForm.bank_account_no}
+          value={employeeForm.bank_account_no}
           required=""
           length={30}
         />
@@ -148,7 +155,7 @@ function PersonalForm() {
           target="bank_name"
           type="text"
           errorMessage={errorMessage.bank_name}
-          value={personalForm.bank_name}
+          value={employeeForm.bank_name}
           required=""
           length={100}
         />
@@ -157,7 +164,7 @@ function PersonalForm() {
           target="family_card_number"
           type="number"
           errorMessage={errorMessage.family_card_number}
-          value={personalForm.family_card_number}
+          value={employeeForm.family_card_number}
           required=""
           length={30}
         />
@@ -166,7 +173,7 @@ function PersonalForm() {
           target="safety_insurance_no"
           type="number"
           errorMessage={errorMessage.safety_insurance_no}
-          value={personalForm.safety_insurance_no}
+          value={employeeForm.safety_insurance_no}
           required=""
           length={30}
         />
@@ -175,7 +182,7 @@ function PersonalForm() {
           target="health_insurance_no"
           type="number"
           errorMessage={errorMessage.health_insurance_no}
-          value={personalForm.health_insurance_no}
+          value={employeeForm.health_insurance_no}
           required=""
           length={30}
         />

@@ -5,16 +5,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import iconCalendar from "../../assets/iconCalendar.svg";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import classNames from "classnames";
-
-import { personalContext } from "../pages/CreateOrUpdatePage";
+import { useAppDispatch } from "../../store";
+import { changeEmployeeForm, validateEmployeeForm } from "../../redux/employeeSlice";
 
 type propsDatePick = {
   label: string;
   value: string;
+  target: string;
   errorMessage: string;
 };
-function DatePick({ value, errorMessage, label }: propsDatePick) {
-  const { handleChangeValuePersonalForm, validatePersonalForm } = useContext(personalContext);
+function DatePick({ target, value, errorMessage, label }: propsDatePick) {
+  const dispatch = useAppDispatch();
   return (
     <div className=" mb-4 flex items-center justify-between">
       <label htmlFor="name">
@@ -38,10 +39,10 @@ function DatePick({ value, errorMessage, label }: propsDatePick) {
           isClearable
           onChange={(date: Date | null) => {
             const value = date !== null ? date.toISOString().slice(0, 10) : "";
-            handleChangeValuePersonalForm(value, "dob");
-            validatePersonalForm(value, "dob", "required", 100);
+            dispatch(changeEmployeeForm({ target, value }));
+            dispatch(validateEmployeeForm({ target, value, required: "required", length: 100 }));
           }}
-          onBlur={() => validatePersonalForm(value, "dob", "required", 100)}
+          onBlur={() => dispatch(validateEmployeeForm({ target, value, required: "required", length: 100 }))}
         />
         <span className=" absolute left-3 top-4">
           <img src={iconCalendar} alt="" />

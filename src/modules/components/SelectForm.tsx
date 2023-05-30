@@ -1,9 +1,10 @@
 import { FormHelperText, MenuItem, Select } from "@mui/material";
 import React, { useContext } from "react";
-import { personalContext } from "../pages/CreateOrUpdatePage";
 import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { genderType, marriageType } from "../../constants/type";
+import { useAppDispatch } from "../../store";
+import { changeEmployeeForm, validateEmployeeForm } from "../../redux/employeeSlice";
 type SelectFormType = {
   label: string;
   value: string;
@@ -14,8 +15,7 @@ type SelectFormType = {
   required: string;
 };
 function SelectForm({ label, value, defaultValue, target, errorMessage, required, selectList }: SelectFormType) {
-  const { handleChangeValuePersonalForm, validatePersonalForm } = useContext(personalContext);
-
+  const dispatch = useAppDispatch();
   return (
     <div className=" mb-4 flex items-center justify-between">
       <label className="text-left  ">
@@ -27,10 +27,10 @@ function SelectForm({ label, value, defaultValue, target, errorMessage, required
           value={value}
           defaultValue=""
           onChange={(e) => {
-            handleChangeValuePersonalForm(e.target.value, target);
-            validatePersonalForm(e.target.value, target, required, 50);
+            dispatch(changeEmployeeForm({ target, value: e.target.value }));
+            dispatch(validateEmployeeForm({ target, value: e.target.value, required, length: 100 }));
           }}
-          onBlur={() => validatePersonalForm(value, target, required, 50)}
+          onBlur={() => dispatch(validateEmployeeForm({ target, value, required, length: 100 }))}
           displayEmpty
           IconComponent={ExpandMoreIcon}
           error={!!errorMessage}

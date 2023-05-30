@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { FormControl, FormHelperText } from "@mui/material";
 import { CustomTextField } from "../../CustomStyle/StyleInput";
-import { personalContext } from "../pages/CreateOrUpdatePage";
+import { useAppDispatch } from "../../store";
+import { changeEmployeeForm, validateEmployeeForm } from "../../redux/employeeSlice";
 
 type InputFormType = {
   label: string;
@@ -13,7 +14,7 @@ type InputFormType = {
   length: number;
 };
 function InputForm({ label, type, value, errorMessage, required, length, target }: InputFormType) {
-  const { handleChangeValuePersonalForm, validatePersonalForm } = useContext(personalContext);
+  const dispatch = useAppDispatch();
   return (
     <div className="  mb-4 flex items-center justify-between">
       <label>
@@ -27,10 +28,10 @@ function InputForm({ label, type, value, errorMessage, required, length, target 
           type={type}
           value={value}
           onChange={(e) => {
-            handleChangeValuePersonalForm(e.target.value, target);
-            validatePersonalForm(e.target.value, target, required, length);
+            dispatch(changeEmployeeForm({ target, value: e.target.value }));
+            dispatch(validateEmployeeForm({ target, value: e.target.value, required, length }));
           }}
-          onBlur={() => validatePersonalForm(value, target, required, length)}
+          onBlur={() => dispatch(validateEmployeeForm({ target, value, required, length }))}
         />
         {!!errorMessage && <FormHelperText sx={{ color: "rgb(229, 72, 77)" }}>{errorMessage}</FormHelperText>}
       </FormControl>

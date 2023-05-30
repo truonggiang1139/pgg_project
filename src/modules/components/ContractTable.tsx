@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import iconDelete from "../../assets/iconDelete.svg";
 export default function ContractTable() {
   const dispatch = useAppDispatch();
-  const contracts = useSelector((state: RootState) => state.employee.contractForm.contracts);
+  const contracts = useSelector((state: RootState) => state.employee.employeeForm.contracts);
   const header = [
     { field: "id", headerName: "No", width: 50 },
     { field: "name", headerName: "Contract Name", width: 150 },
@@ -14,7 +14,7 @@ export default function ContractTable() {
   ];
   return (
     <TableContainer className="mx-3 h-200 ">
-      <Table stickyHeader aria-label="sticky table" className="rounded-lg border border-white" size="small">
+      <Table className="rounded-lg border border-white" size="small">
         <TableHead sx={{ borderRadius: "12px" }}>
           <TableRow
             sx={{
