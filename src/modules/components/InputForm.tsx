@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { FormControl, FormHelperText } from "@mui/material";
+import { FormControl, FormHelperText, InputAdornment } from "@mui/material";
 import { CustomTextField } from "../../CustomStyle/StyleInput";
 import { useAppDispatch } from "../../store";
 import { changeEmployeeForm, validateEmployeeForm } from "../../redux/employeeSlice";
@@ -12,8 +12,9 @@ type InputFormType = {
   errorMessage: string;
   required: string;
   length: number;
+  arrow: boolean;
 };
-function InputForm({ label, type, value, errorMessage, required, length, target }: InputFormType) {
+function InputForm({ label, type, value, errorMessage, required, length, target, arrow }: InputFormType) {
   const dispatch = useAppDispatch();
   return (
     <div className="  mb-4 flex items-center justify-between">
@@ -23,10 +24,12 @@ function InputForm({ label, type, value, errorMessage, required, length, target 
       </label>
       <FormControl className="flex w-3/5 flex-col">
         <CustomTextField
+          className={arrow ? "numeric-input" : ""}
           disableUnderline
           error={!!errorMessage}
           type={type}
           value={value}
+          startAdornment={!arrow ? <InputAdornment position="start">Rp</InputAdornment> : <></>}
           onChange={(e) => {
             dispatch(changeEmployeeForm({ target, value: e.target.value }));
             dispatch(validateEmployeeForm({ target, value: e.target.value, required, length }));

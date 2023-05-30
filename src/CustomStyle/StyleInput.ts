@@ -12,12 +12,14 @@ export const CustomTextField = styled(Input)(() => ({
   "&.Mui-focused": {
     backgroundColor: "rgba(0, 0, 0, 0.06)"
   },
-  "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
-    display: "none"
+  "&.numeric-input": {
+    "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+      display: "none"
+    }
   },
-  "& input[type=tel]": {
-    MozAppearance: "textfield"
-  },
+  // "&.numberic input[type=tel]": {
+  //   MozAppearance: "textfield"
+  // },
   "&.Mui-error": {
     backgroundColor: "rgb(255, 239, 239)",
     border: "1px solid rgb(243, 174, 175)"

@@ -30,6 +30,7 @@ function PersonalForm() {
     <form className="flex justify-between px-3">
       <div className="leftForm flex w-48% flex-col">
         <InputForm
+          arrow={true}
           label="Name"
           target="name"
           type="text"
@@ -48,6 +49,7 @@ function PersonalForm() {
           selectList={gender}
         />
         <InputForm
+          arrow={true}
           label="Mother Name"
           target="mother_name"
           type="text"
@@ -58,6 +60,7 @@ function PersonalForm() {
         />
         <DatePick label="Date of birth" value={employeeForm.dob} errorMessage={errorMessage.dob} target="dob" />
         <InputForm
+          arrow={true}
           label="Place of birth"
           target="pob"
           type="text"
@@ -67,6 +70,7 @@ function PersonalForm() {
           length={50}
         />
         <InputForm
+          arrow={true}
           label="KTP No."
           target="ktp_no"
           type="number"
@@ -76,6 +80,7 @@ function PersonalForm() {
           length={20}
         />
         <InputForm
+          arrow={true}
           label="National Card ID"
           target="nc_id"
           type="number"
@@ -85,6 +90,7 @@ function PersonalForm() {
           length={20}
         />
         <InputForm
+          arrow={true}
           label="Home Address 1"
           target="home_address_1"
           type="text"
@@ -94,6 +100,7 @@ function PersonalForm() {
           length={100}
         />
         <InputForm
+          arrow={true}
           label="Home Address 2"
           target="home_address_2"
           type="text"
@@ -106,6 +113,7 @@ function PersonalForm() {
 
       <div className="rightForm flex w-48% flex-col">
         <InputForm
+          arrow={true}
           label="Mobile No."
           target="mobile_no"
           type="number"
@@ -115,6 +123,7 @@ function PersonalForm() {
           length={20}
         />
         <InputForm
+          arrow={true}
           label="Tel No."
           target="tel_no"
           type="number"
@@ -133,6 +142,7 @@ function PersonalForm() {
           selectList={marriageStatus}
         />
         <InputForm
+          arrow={true}
           label="Bank Card No."
           target="card_number"
           type="number"
@@ -142,6 +152,7 @@ function PersonalForm() {
           length={30}
         />
         <InputForm
+          arrow={true}
           label="Bank Account No."
           target="bank_account_no"
           type="number"
@@ -151,6 +162,7 @@ function PersonalForm() {
           length={30}
         />
         <InputForm
+          arrow={true}
           label="Bank Name"
           target="bank_name"
           type="text"
@@ -160,6 +172,7 @@ function PersonalForm() {
           length={100}
         />
         <InputForm
+          arrow={true}
           label="Family Card Number"
           target="family_card_number"
           type="number"
@@ -169,6 +182,7 @@ function PersonalForm() {
           length={30}
         />
         <InputForm
+          arrow={true}
           label="Safety Insurance No."
           target="safety_insurance_no"
           type="number"
@@ -178,6 +192,7 @@ function PersonalForm() {
           length={30}
         />
         <InputForm
+          arrow={true}
           label="Health Insurance No."
           target="health_insurance_no"
           type="number"

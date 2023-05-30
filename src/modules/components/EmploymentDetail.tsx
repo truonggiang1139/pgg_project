@@ -3,11 +3,14 @@ import React, { useContext } from "react";
 import InputForm from "./InputForm";
 import SelectForm from "./SelectForm";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState, useAppDispatch } from "../../store";
 import { employeeContext } from "../pages/CreateOrUpdatePage";
-
+import { CustomCheckBox } from "../../CustomStyle/StyleCheckBox";
+import { ReactComponent as IconCheckbox } from "../../assets/iconCheckBox.svg";
+import { changeEmployeeForm } from "../../redux/employeeSlice";
 export default function EmploymentDetail() {
   const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
+  const dispatch = useAppDispatch();
   const { department, position } = useContext(employeeContext);
   return (
     <div className="mt-3 w-full rounded-xl bg-dataTable  p-6 px-4">
@@ -49,25 +52,59 @@ export default function EmploymentDetail() {
         />
       </div>
       <div className="-ml-3 flex items-center">
-        <Checkbox />
+        <CustomCheckBox
+          checked={employeeForm.entitle_ot}
+          onChange={() => {
+            dispatch(changeEmployeeForm({ target: "entitle_ot", value: !employeeForm.entitle_ot }));
+            dispatch(
+              changeEmployeeForm({
+                target: "operational_allowance_paid",
+                value: String(Number(!employeeForm.entitle_ot))
+              })
+            );
+            dispatch(
+              changeEmployeeForm({
+                target: "attendance_allowance_paid",
+                value: String(Number(!employeeForm.entitle_ot))
+              })
+            );
+          }}
+          icon={<IconCheckbox stroke={"#DFE3E6"} fill={"white"} />}
+        />
         <label className="ml-3" htmlFor="">
           Entitled OT
         </label>
       </div>
       <div className="-ml-3 flex  items-center ">
-        <Checkbox />
+        <CustomCheckBox
+          value={employeeForm.meal_allowance_paid}
+          onChange={() =>
+            dispatch(changeEmployeeForm({ target: "meal_allowance_paid", value: employeeForm.meal_allowance_paid }))
+          }
+          icon={<IconCheckbox stroke={"#DFE3E6"} fill={"white"} />}
+        />
         <label className="ml-3" htmlFor="">
           Meal Allowance Paid
         </label>
       </div>
       <div className="-ml-3 flex items-center">
-        <Checkbox disabled />
+        <CustomCheckBox
+          disabled
+          checked={employeeForm.operational_allowance_paid === "0"}
+          value={employeeForm.operational_allowance_paid}
+          icon={<IconCheckbox stroke={"#DFE3E6"} fill={"#F1F3F5"} />}
+        />
         <label className="ml-3" htmlFor="">
           Operational Allowance Paid
         </label>
       </div>
       <div className="-ml-3 flex items-center">
-        <Checkbox disabled checked />
+        <CustomCheckBox
+          disabled
+          checked={employeeForm.attendance_allowance_paid === "0"}
+          value={employeeForm.attendance_allowance_paid}
+          icon={<IconCheckbox stroke={"#DFE3E6"} fill={"#F1F3F5"} />}
+        />
         <label className="ml-3" htmlFor="">
           Attendance Allowance Paid
         </label>

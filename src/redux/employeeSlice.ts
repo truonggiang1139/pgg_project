@@ -6,7 +6,7 @@ import { API_PATHS } from "../configs/api";
 
 type dataValueType = {
   target: string;
-  value: string;
+  value: string | boolean;
 };
 type validateDataValueType = {
   target: string;

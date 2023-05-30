@@ -14,7 +14,16 @@ export default function ContractInput() {
   return (
     <div className="flex w-3/5  flex-col px-5">
       <DatePick label="Date of birth" value="" errorMessage="" target={""} />
-      <InputForm label="Name" target="name" type="text" errorMessage="" value="" required="Name" length={50} />
+      <InputForm
+        label="Name"
+        target="name"
+        type="text"
+        errorMessage=""
+        value=""
+        required="Name"
+        length={50}
+        arrow={true}
+      />
 
       <div className="flex flex-wrap justify-between">
         <Button

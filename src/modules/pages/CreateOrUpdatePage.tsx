@@ -75,6 +75,9 @@ export default function CreateOrUpdatePage() {
   };
   useEffect(() => {
     getData();
+    setTimeout(() => {
+      dispatch(checkValidEmployeeForm());
+    }, 3000);
     return () => {
       resetForm();
     };

@@ -50,7 +50,7 @@ export default function ContractInfor() {
             label="Employee Type"
             value={employeeForm.type}
             selectList={selectList}
-            defaultValue=""
+            defaultValue="Choose Type"
             target="type"
             errorMessage={errorMessage.type}
             required={"Employee Type"}
