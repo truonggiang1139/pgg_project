@@ -32,9 +32,8 @@ export default function Others() {
   const { grade, benefit } = useContext(employeeContext);
   const [benefitList, setBenefitList] = useState<benefitType[]>([]);
   const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
-  let documents = employeeForm.documents;
   const dispatch = useAppDispatch();
-
+  const documents = useSelector((state: RootState) => state.employee.employeeForm.documents);
   const handleChangeBenefits = (event: React.SyntheticEvent<Element, Event>, value: unknown) => {
     setBenefitList((prev) => (prev = value as benefitType[]));
     const benefitList = (value as benefitType[]).map((item) => item.id);
@@ -42,7 +41,6 @@ export default function Others() {
   };
   const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
-
     if (selectedFile) {
       const newValue: documentType = {
         id: 100,
@@ -51,16 +49,9 @@ export default function Others() {
         document: selectedFile.name,
         updated_at: null
       };
-      let newArray = documents;
-      newArray.unshift({
-        created_at: "2023-05-31T08:47:31.000000Z",
-        document: "https://api-training.hrm.div4.pgtest.co/storage/documents/6902/TKB_1685522851.png",
-        employee_id: 6902,
-        id: 271,
-        updated_at: null
-      });
-
-      // dispatch(changeEmployeeForm({ target: "documents", value: newArray }));
+      let newArray: documentType[] = documents;
+      newArray = [newValue, ...newArray];
+      dispatch(changeEmployeeForm({ target: "documents", value: newArray }));
     }
   };
   return (

@@ -12,6 +12,8 @@ export default function TableDocument() {
     { field: "Action", headerName: "Action", width: 200 }
   ];
   const documents = useSelector((state: RootState) => state.employee.employeeForm.documents);
+  console.log(documents);
+
   return (
     <TableContainer className="mx-auto h-200 w-full max-w-5xl ">
       <Table className="rounded-lg border border-white" size="small">
@@ -33,7 +35,7 @@ export default function TableDocument() {
         <TableBody>
           {documents.map((document, index) => {
             return (
-              <TableRow>
+              <TableRow key={index}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{document.document.split("/").pop()}</TableCell>
                 <TableCell>{moment(document.created_at).format("YYYY/MM/DD")}</TableCell>
