@@ -5,6 +5,7 @@ export type LoginFormType = {
 };
 
 export type EmployeeType = {
+  id: number;
   name: string;
   gender: number | string;
   mother_name: string;
@@ -32,6 +33,14 @@ export type EmployeeType = {
   meal_allowance_paid: boolean;
   operational_allowance_paid: "0" | "1";
   attendance_allowance_paid: "0" | "1";
+  basic_salary: number;
+  audit_salary: number;
+  safety_insurance: number;
+  health_insurance: number;
+  meal_allowance: number;
+  grade_id: number | null;
+  grade: gradeType | null;
+  benefits: Number[];
 };
 export type EmployeeErrorMessageType = {
   name: string;
@@ -54,6 +63,11 @@ export type EmployeeErrorMessageType = {
   health_insurance_no: string;
   contract_start_date: string;
   type: string;
+  basic_salary: string;
+  audit_salary: string;
+  safety_insurance: string;
+  health_insurance: string;
+  meal_allowance: string;
 };
 export type EmployeeListResponseType = {
   current_page: number;
@@ -146,7 +160,27 @@ export type genderType = {
   id: number;
   name: string;
 };
-export type employeeType = {
+export type employeeTypeType = {
   id: number;
   name: string;
+};
+
+export type benefitType = {
+  id: number;
+  name: string;
+  code: string;
+  type: number;
+  value: string;
+  company_id: number;
+  created_at: string;
+  updated_at: string;
+};
+export type gradeType = {
+  id: number;
+  name: string;
+  prefix: string;
+  company_id: number;
+  created_at: string;
+  updated_at: string;
+  benefits: benefitType[];
 };

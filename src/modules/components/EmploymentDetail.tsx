@@ -1,6 +1,5 @@
 import { Checkbox, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import InputForm from "./InputForm";
 import SelectForm from "./SelectForm";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store";
@@ -103,7 +102,7 @@ export default function EmploymentDetail() {
           disabled
           checked={employeeForm.attendance_allowance_paid === "0"}
           value={employeeForm.attendance_allowance_paid}
-          icon={<IconCheckbox stroke={"#DFE3E6"} fill={"#F1F3F5"} />}
+          icon={<IconCheckbox stroke={"#DFE3E6"} fill={"rgb(215, 219, 223)"} />}
         />
         <label className="ml-3" htmlFor="">
           Attendance Allowance Paid

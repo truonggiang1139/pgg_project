@@ -4,7 +4,7 @@ import DatePick from "./DatePick";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ContractForm from "./ContractForm";
 import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
-import { employeeType } from "../../constants/type";
+import { employeeTypeType } from "../../constants/type";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import SelectForm from "./SelectForm";
@@ -12,7 +12,7 @@ import SelectForm from "./SelectForm";
 export default function ContractInfor() {
   const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
   const errorMessage = useSelector((state: RootState) => state.employee.errorMessage);
-  const selectList: employeeType[] = useMemo(
+  const selectList: employeeTypeType[] = useMemo(
     () => [
       { id: 0, name: "Permanent" },
       { id: 1, name: "Part-time" },

@@ -6,6 +6,6 @@ export const CustomCheckBox = styled(Checkbox)(() => ({
     color: "rgb(48, 164, 108) !important"
   },
   "&.Mui-disabled": {
-    color: "rgba(0, 0, 0, 0.26) !important"
+    color: "rgb(215,219,223) !important"
   }
 }));
