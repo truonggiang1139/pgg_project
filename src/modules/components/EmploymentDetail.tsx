@@ -102,7 +102,7 @@ export default function EmploymentDetail() {
           disabled
           checked={employeeForm.attendance_allowance_paid === "0"}
           value={employeeForm.attendance_allowance_paid}
-          icon={<IconCheckbox stroke={"#DFE3E6"} fill={"rgb(215, 219, 223)"} />}
+          icon={<IconCheckbox stroke={"#DFE3E6"} fill={"#F1F3F5"} />}
         />
         <label className="ml-3" htmlFor="">
           Attendance Allowance Paid

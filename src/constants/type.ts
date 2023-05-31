@@ -41,6 +41,8 @@ export type EmployeeType = {
   grade_id: number | null;
   grade: gradeType | null;
   benefits: Number[];
+  remark: string;
+  documents: documentType[];
 };
 export type EmployeeErrorMessageType = {
   name: string;
@@ -183,4 +185,25 @@ export type gradeType = {
   created_at: string;
   updated_at: string;
   benefits: benefitType[];
+};
+
+export type documentType = {
+  created_at: string;
+  document: string;
+  employee_id: number;
+  id: number;
+  updated_at: null;
+};
+
+export type contractFormDataType = {
+  employee_id: string;
+  names: string[];
+  contract_dates: string[];
+  documents: File[];
+  modified_contracts: string[];
+};
+
+export type documentFormDataType = {
+  employee_id: string | null;
+  documents: File[];
 };

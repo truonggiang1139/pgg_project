@@ -1,16 +1,68 @@
-import { TextField, Typography } from "@mui/material";
-import React, { useContext } from "react";
+import { Button, Select, TextField, Typography, styled } from "@mui/material";
+import React, { useContext, useState } from "react";
 import { employeeContext } from "../pages/CreateOrUpdatePage";
 import { CustomAutoComplete } from "../../CustomStyle/StyleAutoComplete";
-import { benefitType, gradeType } from "../../constants/type";
+import { benefitType, documentType, gradeType } from "../../constants/type";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store";
 import { changeEmployeeForm } from "../../redux/employeeSlice";
+import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import TableDocument from "./TableDocument";
+import moment from "moment";
+const TextAreaStyle = styled("textarea")(({}) => ({
+  width: "100%",
+  flexGrow: 1,
+  boxSizing: "border-box",
+  borderRadius: 8,
+  minWidth: 308,
+  backgroundColor: "#f1f3f5",
+  resize: "none",
+  marginBottom: "8px",
+  padding: 16,
 
+  "&:focus": {
+    backgroundColor: "rgba(0, 0, 0, 0.06)",
+    border: "none",
+    outline: "none"
+  }
+}));
 export default function Others() {
   const { grade, benefit } = useContext(employeeContext);
+  const [benefitList, setBenefitList] = useState<benefitType[]>([]);
   const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
+  let documents = employeeForm.documents;
   const dispatch = useAppDispatch();
+
+  const handleChangeBenefits = (event: React.SyntheticEvent<Element, Event>, value: unknown) => {
+    setBenefitList((prev) => (prev = value as benefitType[]));
+    const benefitList = (value as benefitType[]).map((item) => item.id);
+    dispatch(changeEmployeeForm({ target: "benefits", value: benefitList }));
+  };
+  const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files && e.target.files[0];
+
+    if (selectedFile) {
+      const newValue: documentType = {
+        id: 100,
+        employee_id: 100,
+        created_at: moment(selectedFile.lastModified).format("YYYY-MM-DD"),
+        document: selectedFile.name,
+        updated_at: null
+      };
+      let newArray = documents;
+      newArray.unshift({
+        created_at: "2023-05-31T08:47:31.000000Z",
+        document: "https://api-training.hrm.div4.pgtest.co/storage/documents/6902/TKB_1685522851.png",
+        employee_id: 6902,
+        id: 271,
+        updated_at: null
+      });
+
+      // dispatch(changeEmployeeForm({ target: "documents", value: newArray }));
+    }
+  };
   return (
     <div className="mt-3 w-full rounded-xl bg-dataTable  p-6 px-4">
       <header className="flex  items-center justify-between">
@@ -65,11 +117,14 @@ export default function Others() {
         <div className=" mb-4 flex items-center justify-between">
           <label htmlFor="grade">Benefit</label>
           <CustomAutoComplete
+            sx={{}}
             className="flex w-3/5 flex-col"
             multiple
             disableCloseOnSelect
             disablePortal
             options={benefit}
+            value={benefitList}
+            onChange={handleChangeBenefits}
             getOptionLabel={(option) => (option as benefitType).name}
             renderInput={(params) => (
               <TextField
@@ -84,6 +139,66 @@ export default function Others() {
             )}
           />
         </div>
+        <div className=" mb-4 flex items-center justify-between">
+          <label htmlFor="" className="w-2/5 text-left">
+            Remark
+          </label>
+          <TextAreaStyle
+            name="remark"
+            className="w-3/5"
+            value={employeeForm.remark}
+            onChange={(e) => dispatch(changeEmployeeForm({ target: "remark", value: e.target.value }))}
+          />
+        </div>
+        <div className=" mb-4 flex items-center justify-between">
+          <label htmlFor="" className="w-2/5 text-left">
+            HRM User Account
+          </label>
+          <Select
+            disabled
+            sx={{
+              width: "60%",
+              "&.Mui-disabled": {
+                backgroundColor: "rgba(0, 0, 0, 0.12)"
+              }
+            }}
+            defaultValue=""
+            IconComponent={ExpandMoreIcon}
+            input={<CustomInputSelect />}
+            MenuProps={{
+              PaperProps: customPaperProps
+            }}
+          ></Select>
+        </div>
+      </div>
+      <div className="flex w-full flex-col rounded-md border border-formContract py-7">
+        <header className="ml-2 flex w-1/2 flex-row ">
+          <div className="w-2/5 text-left">Document</div>
+          <Button
+            variant="contained"
+            component="label"
+            sx={{
+              color: "rgb(0, 145, 255)",
+              backgroundColor: "rgb(237, 246, 255)",
+              border: "1px dashed",
+              width: "100px",
+              marginBottom: "12px",
+              boxShadow: "none",
+              borderRadius: "6px",
+              height: "32px",
+              textTransform: "none",
+              "&:hover": {
+                boxShadow: "none",
+                backgroundColor: "rgba(0, 145, 255, 0.08)"
+              }
+            }}
+          >
+            <FileUploadOutlinedIcon />
+            Upload
+            <input type="file" accept="image/*,.pdf,.csv,.xlsx,.docx" hidden onChange={handleUploadFile} />
+          </Button>
+        </header>
+        <TableDocument />
       </div>
     </div>
   );

@@ -33,10 +33,18 @@ export const CustomAutoComplete = styled(Autocomplete)(() => ({
     margin: "2px",
     padding: "4px"
   },
+  "& .MuiAutocomplete-listbox [aria-selected='true']": {
+    backgroundColor: "red !important"
+  },
   ".MuiOutlinedInput-notchedOutline": {
     border: "none"
   },
   "& .MuiFormControl-root-MuiTextField-root": {
     marginTop: "0"
+  },
+
+  "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected='true']": {
+    backgroundColor: "#e9f9ee",
+    color: "#30a46c"
   }
 }));

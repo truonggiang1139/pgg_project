@@ -1,4 +1,10 @@
-import { EmployeeErrorMessageType, EmployeeListResponseType, EmployeeType, gradeType } from "./../constants/type";
+import {
+  EmployeeErrorMessageType,
+  EmployeeListResponseType,
+  EmployeeType,
+  documentType,
+  gradeType
+} from "./../constants/type";
 import Cookies from "js-cookie";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -6,7 +12,7 @@ import { API_PATHS } from "../configs/api";
 
 type dataValueType = {
   target: string;
-  value: string | number | boolean | gradeType | null;
+  value: string | number | boolean | gradeType | null | Number[] | documentType[];
 };
 type validateDataValueType = {
   target: string;
@@ -58,7 +64,17 @@ const initialState: initialStateType = {
     meal_allowance: 0,
     grade_id: null,
     grade: null,
-    benefits: []
+    benefits: [],
+    remark: "",
+    documents: [
+      {
+        created_at: "2023-05-31T08:47:31.000000Z",
+        document: "https://api-training.hrm.div4.pgtest.co/storage/documents/6902/TKB_1685522851.png",
+        employee_id: 6902,
+        id: 271,
+        updated_at: null
+      }
+    ]
   },
   errorMessage: {
     name: "",
