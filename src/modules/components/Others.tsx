@@ -33,10 +33,6 @@ export default function Others() {
   const [benefitList, setBenefitList] = useState<benefitType[]>([]);
   const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
   const dispatch = useAppDispatch();
-<<<<<<< HEAD
-=======
-  const documents = useSelector((state: RootState) => state.employee.employeeForm.documents);
->>>>>>> 3b160e23039465f7d3fcbe82ec6e5b7960f3dc20
   const handleChangeBenefits = (event: React.SyntheticEvent<Element, Event>, value: unknown) => {
     setBenefitList((prev) => (prev = value as benefitType[]));
     const benefitList = (value as benefitType[]).map((item) => item.id);
@@ -52,21 +48,11 @@ export default function Others() {
         document: selectedFile.name,
         updated_at: null
       };
-<<<<<<< HEAD
       dispatch(changeEmployeeForm({ target: "documents", value: [newValue, ...employeeForm.documents] }));
     }
   };
   return (
     <div className="mt-3 w-full rounded-xl bg-dataTable  p-6">
-=======
-      let newArray: documentType[] = documents;
-      newArray = [newValue, ...newArray];
-      dispatch(changeEmployeeForm({ target: "documents", value: newArray }));
-    }
-  };
-  return (
-    <div className="mt-3 w-full rounded-xl bg-dataTable  p-6 px-4">
->>>>>>> 3b160e23039465f7d3fcbe82ec6e5b7960f3dc20
       <header className="flex  items-center justify-between">
         <Typography className="font-semibold" variant="h6">
           Others
@@ -173,13 +159,8 @@ export default function Others() {
           ></Select>
         </div>
       </div>
-<<<<<<< HEAD
       <div className="flex w-full flex-col rounded-md border border-formContract ">
         <header className="my-5 ml-6 flex w-1/2 flex-row items-center ">
-=======
-      <div className="flex w-full flex-col rounded-md border border-formContract py-7">
-        <header className="ml-2 flex w-1/2 flex-row ">
->>>>>>> 3b160e23039465f7d3fcbe82ec6e5b7960f3dc20
           <div className="w-2/5 text-left">Document</div>
           <Button
             variant="contained"
@@ -189,10 +170,6 @@ export default function Others() {
               backgroundColor: "rgb(237, 246, 255)",
               border: "1px dashed",
               width: "100px",
-<<<<<<< HEAD
-=======
-              marginBottom: "12px",
->>>>>>> 3b160e23039465f7d3fcbe82ec6e5b7960f3dc20
               boxShadow: "none",
               borderRadius: "6px",
               height: "32px",
