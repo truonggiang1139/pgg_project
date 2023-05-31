@@ -21,6 +21,7 @@ module.exports = {
         600: "600px"
       },
       colors: {
+        benefitItem:'rgb(230, 232, 235)',
         input: "rgb(241,243,245)",
         tab: "rgb(237,246,255)",
         textTab: "rgb(0, 145, 255)",

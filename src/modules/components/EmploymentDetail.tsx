@@ -1,6 +1,5 @@
 import { Checkbox, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import InputForm from "./InputForm";
 import SelectForm from "./SelectForm";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store";

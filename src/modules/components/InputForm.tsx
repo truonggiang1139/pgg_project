@@ -29,7 +29,15 @@ function InputForm({ label, type, value, errorMessage, required, length, target,
           error={!!errorMessage}
           type={type}
           value={value}
-          startAdornment={!arrow ? <InputAdornment position="start">Rp</InputAdornment> : <></>}
+          startAdornment={
+            !arrow ? (
+              <InputAdornment position="start">
+                <p className="text-blue-600">Rp</p>
+              </InputAdornment>
+            ) : (
+              <></>
+            )
+          }
           onChange={(e) => {
             dispatch(changeEmployeeForm({ target, value: e.target.value }));
             dispatch(validateEmployeeForm({ target, value: e.target.value, required, length }));

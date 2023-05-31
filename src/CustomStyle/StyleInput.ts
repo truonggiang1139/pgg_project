@@ -17,9 +17,6 @@ export const CustomTextField = styled(Input)(() => ({
       display: "none"
     }
   },
-  // "&.numberic input[type=tel]": {
-  //   MozAppearance: "textfield"
-  // },
   "&.Mui-error": {
     backgroundColor: "rgb(255, 239, 239)",
     border: "1px solid rgb(243, 174, 175)"

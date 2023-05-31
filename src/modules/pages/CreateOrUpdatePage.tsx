@@ -17,31 +17,39 @@ import {
   changeEmployeeForm,
   checkValidContractForm,
   checkValidEmployeeForm,
+  checkValidSalary,
   resetForm
 } from "../../redux/employeeSlice";
 import { API_PATHS } from "../../configs/api";
 import iconError from "../../assets/iconError.svg";
-import { departmentType, marriageType, positionType } from "../../constants/type";
+import { benefitType, departmentType, gradeType, marriageType, positionType } from "../../constants/type";
 import axios from "axios";
 import Cookies from "js-cookie";
 type employeeContextType = {
   marriageStatus: marriageType[];
   department: departmentType[];
   position: positionType[];
+  grade: gradeType[];
+  benefit: benefitType[];
 };
 export const employeeContext = createContext<employeeContextType>({
   marriageStatus: [],
   department: [],
-  position: []
+  position: [],
+  grade: [],
+  benefit: []
 });
 export default function CreateOrUpdatePage() {
   const [tab, setTab] = useState(0);
   const employeeErrorTab = useSelector((state: RootState) => state.employee.employeeFormError);
   const contractErrorTab = useSelector((state: RootState) => state.employee.contractFormError);
+  const salaryErrorTab = useSelector((state: RootState) => state.employee.salaryFormError);
   const [data, setData] = useState({
     marriageStatus: [],
     department: [],
-    position: []
+    position: [],
+    grade: [],
+    benefit: []
   });
   const dispatch = useAppDispatch();
 
@@ -51,6 +59,9 @@ export default function CreateOrUpdatePage() {
     }
     if (tab === 1) {
       dispatch(checkValidContractForm());
+    }
+    if (tab == 3) {
+      dispatch(checkValidSalary());
     }
     setTab(newTab);
   };
@@ -65,11 +76,25 @@ export default function CreateOrUpdatePage() {
       const apiPosition = axios.get(API_PATHS.position, {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` }
       });
-      const [marriageRes, departmentRes, positionRes] = await Promise.all([apiMarriage, apiDepartment, apiPosition]);
+      const apiGrade = axios.get(API_PATHS.grade, {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      });
+      const apiBenefit = axios.get(API_PATHS.benefit, {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+      });
+      const [marriageRes, departmentRes, positionRes, gradeRes, benefitRes] = await Promise.all([
+        apiMarriage,
+        apiDepartment,
+        apiPosition,
+        apiGrade,
+        apiBenefit
+      ]);
       setData({
         marriageStatus: marriageRes.data.data,
         department: departmentRes.data.data,
-        position: positionRes.data.data
+        position: positionRes.data.data,
+        grade: gradeRes.data.data,
+        benefit: benefitRes.data.data
       });
     } catch (error) {}
   };
@@ -132,7 +157,21 @@ export default function CreateOrUpdatePage() {
                 data-value={contractErrorTab}
               />
               <CustomeTab label="Employment Details" />
-              <CustomeTab label="Salary & Wages" />
+              <CustomeTab
+                label={
+                  salaryErrorTab ? (
+                    <div className="flex items-center">
+                      Salary & Wages
+                      <span className="ml-2">
+                        <img src={iconError} />
+                      </span>
+                    </div>
+                  ) : (
+                    "Salary & Wages"
+                  )
+                }
+                data-value={salaryErrorTab}
+              />
               <CustomeTab label="Others" />
             </CustomTabs>
             <employeeContext.Provider value={data}>
