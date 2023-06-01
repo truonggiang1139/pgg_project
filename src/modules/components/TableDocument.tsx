@@ -4,7 +4,7 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store";
 import { ReactComponent as IconDelete } from "../../assets/iconDelete.svg";
-import { changeEmployeeForm } from "../../redux/employeeSlice";
+import { changeEmployeeForm, removeDocumentFile } from "../../redux/employeeSlice";
 export default function TableDocument() {
   const header = [
     { field: "No", headerName: "No", width: 50 },
@@ -14,9 +14,10 @@ export default function TableDocument() {
   ];
   const dispatch = useAppDispatch();
   const documents = useSelector((state: RootState) => state.employee.employeeForm.documents);
-  const handleDeleteDoc = (value: string) => {
-    const newArray = documents.filter((document) => document.document !== value);
+  const handleDeleteDoc = (id: number) => {
+    const newArray = documents.filter((document) => document.id !== id);
     dispatch(changeEmployeeForm({ target: "documents", value: newArray }));
+    dispatch(removeDocumentFile(id));
   };
   return (
     <TableContainer className=" h-200 px-4  ">
@@ -49,7 +50,7 @@ export default function TableDocument() {
                     <Button
                       className="ml-2 h-6 rounded-md bg-red2 px-3 py-2 normal-case text-required hover:bg-red3 focus:outline-none "
                       onClick={() => {
-                        handleDeleteDoc(document.document);
+                        handleDeleteDoc(document.id);
                       }}
                     >
                       <IconDelete />

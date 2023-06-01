@@ -14,10 +14,19 @@ import { RootState, useAppDispatch } from "../../store";
 import { changeEmployeeForm } from "../../redux/employeeSlice";
 import { useSelector } from "react-redux";
 import { contractsType } from "../../constants/type";
+import moment from "moment";
+
+type contractFileType = {
+  file: File | null;
+  contractDate: string;
+  contractName: string;
+};
 export default function ContractInput() {
-  const [file, setFile] = useState<File | null>(null);
-  const [contractDate, setContractDate] = useState<string>("");
-  const [contractName, setContractName] = useState("");
+  const [contractFile, setContractFile] = useState<contractFileType>({
+    file: null,
+    contractDate: "",
+    contractName: ""
+  });
   const [errorMessage, setErrorMessage] = useState({
     contractDate: false,
     contractName: false,
@@ -34,21 +43,28 @@ export default function ContractInput() {
   };
   const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
-    setFile(selectedFile || null);
+    setContractFile((prev) => ({ ...prev, file: selectedFile || null }));
   };
   const handleAddContract = () => {
-    if (file) {
+    checkInput("contractDate", contractFile.contractDate);
+    checkInput("contractName", contractFile.contractName);
+    if (contractFile.file && contractFile.contractDate && contractFile.contractName) {
       const value: contractsType = {
-        id: file.lastModified,
+        id: contractFile.file.lastModified,
         employee_id: "0",
-        contract_date: contractDate,
-        name: contractName,
+        contract_date: moment(contractFile.file.lastModified).format("YYYY/MM/DD"),
+        name: contractFile.contractName,
         document: "",
         created_at: "",
         updated_at: "",
         deleted_at: null
       };
       dispatch(changeEmployeeForm({ target: "contracts", value: [...employeeForm.contracts, value] }));
+      setContractFile({
+        file: null,
+        contractDate: "",
+        contractName: ""
+      });
     }
   };
   return (
@@ -64,7 +80,7 @@ export default function ContractInput() {
           )}
         >
           <DatePicker
-            selected={contractDate ? new Date(contractDate) : null}
+            selected={contractFile.contractDate ? new Date(contractFile.contractDate) : null}
             dateFormat="yyyy/MM/dd"
             className={classNames("  h-8 w-full bg-input px-8 pt-2 outline-none  ", {
               " bg-red-50": errorMessage.contractDate
@@ -72,7 +88,7 @@ export default function ContractInput() {
             isClearable
             onChange={(date: Date | null) => {
               const value = date !== null ? date.toISOString().slice(0, 10) : "";
-              setContractDate(value);
+              setContractFile((prev) => ({ ...prev, contractDate: value }));
               checkInput("contractDate", value);
             }}
           />
@@ -91,10 +107,10 @@ export default function ContractInput() {
           <CustomTextField
             disableUnderline
             type="text"
-            value={contractName}
+            value={contractFile.contractName}
             error={errorMessage.contractName}
             onChange={(e) => {
-              setContractName(e.target.value);
+              setContractFile((prev) => ({ ...prev, contractName: e.target.value }));
               checkInput("contractName", e.target.value);
             }}
           />
@@ -148,17 +164,17 @@ export default function ContractInput() {
         </Button>
       </div>
 
-      {file && (
+      {contractFile.file && (
         <div className="flex justify-start">
           <div className="mt-3 inline-flex  min-w-100 items-center justify-between bg-total px-2 py-1 text-sm">
-            <p>{file.name}</p>
+            <p>{contractFile.file.name}</p>
             <Button
               size="small"
               className=" min-w-fit"
               disableRipple
               disableTouchRipple
               onClick={() => {
-                setFile(null);
+                setContractFile((prev) => ({ ...prev, file: null }));
               }}
               sx={{
                 ":hover": {

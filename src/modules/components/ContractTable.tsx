@@ -31,12 +31,12 @@ export default function ContractTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {contracts.map((contract) => {
+          {contracts.map((contract, index) => {
             return (
               <TableRow>
-                <TableCell>{contract.id}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell>{contract.name}</TableCell>
-                <TableCell>{contract.created_at}</TableCell>
+                <TableCell>{contract.contract_date}</TableCell>
                 <TableCell>
                   <div className="flex  justify-center">
                     <div className="min-w-100 "></div>

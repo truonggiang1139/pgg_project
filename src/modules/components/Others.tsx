@@ -42,7 +42,7 @@ export default function Others() {
     const selectedFile = e.target.files && e.target.files[0];
     if (selectedFile) {
       const newValue: documentType = {
-        id: 100,
+        id: selectedFile.lastModified,
         employee_id: 100,
         created_at: moment(selectedFile.lastModified).format("YYYY-MM-DD"),
         document: selectedFile.name,
@@ -96,7 +96,10 @@ export default function Others() {
             <div className="w-2/5"></div>
             <div className="flex w-3/5 flex-row flex-wrap">
               {employeeForm.grade?.benefits.map((item) => (
-                <div className="mx-1 mb-1 flex h-6 items-center rounded-md bg-benefitItem px-2 text-xs text-gray">
+                <div
+                  key={item.id}
+                  className="mx-1 mb-1 flex h-6 items-center rounded-md bg-benefitItem px-2 text-xs text-gray"
+                >
                   {item.name}
                 </div>
               ))}

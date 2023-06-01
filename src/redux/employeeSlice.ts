@@ -9,7 +9,7 @@ import {
   gradeType
 } from "./../constants/type";
 import Cookies from "js-cookie";
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_PATHS } from "../configs/api";
 import { useSelector } from "react-redux";
@@ -183,9 +183,14 @@ export const employeeSlice = createSlice({
     },
     addDocumentFile: (state, action: PayloadAction<documentFormDataType>) => {
       const { employee_id, documents } = action.payload;
-      state.documentFormData.employee_id = employee_id;
       state.documentFormData.documents.push(...documents);
+
       // state.dataFormDocument.deleted_ids && deleted_ids && state.dataFormDocument.deleted_ids.push(...deleted_ids);
+    },
+    removeDocumentFile: (state, action: PayloadAction<number>) => {
+      let indexToRemove = state.documentFormData.documents.findIndex((obj) => obj.lastModified === action.payload);
+      state.documentFormData.documents.splice(indexToRemove, 1);
+      console.log(current(state.documentFormData.documents));
     },
     addContractFile: (state, action: PayloadAction<contractFormDataType>) => {
       const { employee_id, names, contract_dates, documents } = action.payload;
@@ -216,7 +221,8 @@ export const {
   validateEmployeeForm,
   checkInvalidContractForm,
   checkInvalidSalary,
-  addDocumentFile
+  addDocumentFile,
+  removeDocumentFile
 } = employeeSlice.actions;
 const employeeReducer = employeeSlice.reducer;
 export default employeeReducer;
