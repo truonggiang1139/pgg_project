@@ -33,11 +33,11 @@ export type EmployeeType = {
   meal_allowance_paid: boolean;
   operational_allowance_paid: "0" | "1";
   attendance_allowance_paid: "0" | "1";
-  basic_salary: number;
-  audit_salary: number;
-  safety_insurance: number;
-  health_insurance: number;
-  meal_allowance: number;
+  basic_salary: string;
+  audit_salary: string;
+  safety_insurance: string;
+  health_insurance: string;
+  meal_allowance: string;
   grade_id: number | null;
   grade: gradeType | null;
   benefits: Number[];
@@ -129,7 +129,7 @@ export type contractsType = {
   created_at: string;
   deleted_at: null;
   document: string;
-  employee_id: number;
+  employee_id: string;
   id: number;
   name: string;
   updated_at: string;
@@ -204,6 +204,6 @@ export type contractFormDataType = {
 };
 
 export type documentFormDataType = {
-  employee_id: string | null;
+  employee_id: number | null;
   documents: File[];
 };

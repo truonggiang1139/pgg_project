@@ -7,5 +7,6 @@ export const API_PATHS = {
   position: `${API_HOST}/position`,
   department: `${API_HOST}/department`,
   grade: `${API_HOST}/grade`,
-  benefit: `${API_HOST}/benefit`
+  benefit: `${API_HOST}/benefit`,
+  uploadDoc: `${API_HOST}/employee-document/upload`
 };

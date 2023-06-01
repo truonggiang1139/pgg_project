@@ -5,7 +5,7 @@ import { CustomAutoComplete } from "../../CustomStyle/StyleAutoComplete";
 import { benefitType, documentType, gradeType } from "../../constants/type";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store";
-import { changeEmployeeForm } from "../../redux/employeeSlice";
+import { addDocumentFile, changeEmployeeForm } from "../../redux/employeeSlice";
 import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
@@ -48,6 +48,7 @@ export default function Others() {
         document: selectedFile.name,
         updated_at: null
       };
+      dispatch(addDocumentFile({ employee_id: 1, documents: [selectedFile] }));
       dispatch(changeEmployeeForm({ target: "documents", value: [newValue, ...employeeForm.documents] }));
     }
   };

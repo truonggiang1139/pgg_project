@@ -16,7 +16,6 @@ export default function TableDocument() {
   const documents = useSelector((state: RootState) => state.employee.employeeForm.documents);
   const handleDeleteDoc = (value: string) => {
     const newArray = documents.filter((document) => document.document !== value);
-    console.log(newArray);
     dispatch(changeEmployeeForm({ target: "documents", value: newArray }));
   };
   return (

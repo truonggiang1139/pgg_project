@@ -2,6 +2,9 @@ import {
   EmployeeErrorMessageType,
   EmployeeListResponseType,
   EmployeeType,
+  contractFormDataType,
+  contractsType,
+  documentFormDataType,
   documentType,
   gradeType
 } from "./../constants/type";
@@ -9,10 +12,12 @@ import Cookies from "js-cookie";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_PATHS } from "../configs/api";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 type dataValueType = {
   target: string;
-  value: string | number | boolean | gradeType | null | Number[] | documentType[];
+  value: string | number | boolean | gradeType | null | Number[] | documentType[] | contractsType[];
 };
 type validateDataValueType = {
   target: string;
@@ -26,6 +31,9 @@ type initialStateType = {
   employeeFormError: boolean;
   contractFormError: boolean;
   salaryFormError: boolean;
+  loading: boolean;
+  documentFormData: documentFormDataType;
+  contractFormData: contractFormDataType;
 };
 const initialState: initialStateType = {
   employeeForm: {
@@ -57,24 +65,16 @@ const initialState: initialStateType = {
     meal_allowance_paid: false,
     attendance_allowance_paid: "0",
     operational_allowance_paid: "0",
-    basic_salary: 0,
-    audit_salary: 0,
-    safety_insurance: 0,
-    health_insurance: 0,
-    meal_allowance: 0,
+    basic_salary: "0",
+    audit_salary: "0",
+    safety_insurance: "0",
+    health_insurance: "0",
+    meal_allowance: "0",
     grade_id: null,
     grade: null,
     benefits: [],
     remark: "",
-    documents: [
-      {
-        created_at: "2023-05-31T08:47:31.000000Z",
-        document: "https://api-training.hrm.div4.pgtest.co/storage/documents/6902/TKB_1685522851.png",
-        employee_id: 6902,
-        id: 271,
-        updated_at: null
-      }
-    ]
+    documents: []
   },
   errorMessage: {
     name: "",
@@ -105,8 +105,41 @@ const initialState: initialStateType = {
   },
   employeeFormError: false,
   contractFormError: false,
-  salaryFormError: false
+  salaryFormError: false,
+  loading: false,
+  documentFormData: {
+    documents: [],
+    employee_id: 1
+  },
+  contractFormData: {
+    employee_id: "",
+    names: [],
+    contract_dates: [],
+    documents: [],
+    modified_contracts: []
+  }
 };
+
+export const addEmployee = createAsyncThunk(
+  "employee/addEmployee",
+  async (body: Omit<EmployeeType, "id">, { getState }) => {
+    let token = Cookies.get("token");
+    const res = await axios.post(`${API_PATHS.employee}`, body, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (body.documents.length) {
+      const { employee } = getState() as RootState;
+      const formdata = new FormData();
+      formdata.append("employee_id", res.data.data.id);
+      employee.documentFormData.documents &&
+        employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
+      await axios.post(`${API_PATHS.uploadDoc}`, formdata, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    }
+  }
+);
 export const employeeSlice = createSlice({
   name: "employee",
   initialState,
@@ -128,7 +161,7 @@ export const employeeSlice = createSlice({
         state.errorMessage = { ...state.errorMessage, [target]: "" };
       }
     },
-    checkValidEmployeeForm: (state) => {
+    checkInvalidEmployeeForm: (state) => {
       state.employeeFormError = !(
         !!state.employeeForm.name.length &&
         state.employeeForm.gender !== "" &&
@@ -137,26 +170,53 @@ export const employeeSlice = createSlice({
         !!state.employeeForm.nc_id.length
       );
     },
-    checkValidContractForm: (state) => {
+    checkInvalidContractForm: (state) => {
       state.contractFormError = !(!!state.employeeForm.contract_start_date.length && state.employeeForm.type !== "");
     },
-    checkValidSalary: (state) => {
+    checkInvalidSalary: (state) => {
       state.salaryFormError = !(
         String(state.employeeForm.basic_salary).length &&
         String(state.employeeForm.audit_salary).length &&
         String(state.employeeForm.safety_insurance).length &&
         String(state.employeeForm.meal_allowance).length
       );
+    },
+    addDocumentFile: (state, action: PayloadAction<documentFormDataType>) => {
+      const { employee_id, documents } = action.payload;
+      state.documentFormData.employee_id = employee_id;
+      state.documentFormData.documents.push(...documents);
+      // state.dataFormDocument.deleted_ids && deleted_ids && state.dataFormDocument.deleted_ids.push(...deleted_ids);
+    },
+    addContractFile: (state, action: PayloadAction<contractFormDataType>) => {
+      const { employee_id, names, contract_dates, documents } = action.payload;
+      if (employee_id !== "0") {
+        state.contractFormData.employee_id = employee_id;
+      }
+      if (names[0] != "") {
+        state.contractFormData.names.push(...names);
+        state.contractFormData.contract_dates.push(...contract_dates);
+        state.contractFormData.documents.push(...documents);
+      }
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(addEmployee.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addEmployee.fulfilled, (state) => {
+        state.loading = false;
+      });
   }
 });
 export const {
   changeEmployeeForm,
   resetForm,
-  checkValidEmployeeForm,
+  checkInvalidEmployeeForm,
   validateEmployeeForm,
-  checkValidContractForm,
-  checkValidSalary
+  checkInvalidContractForm,
+  checkInvalidSalary,
+  addDocumentFile
 } = employeeSlice.actions;
 const employeeReducer = employeeSlice.reducer;
 export default employeeReducer;

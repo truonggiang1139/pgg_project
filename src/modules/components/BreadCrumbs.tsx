@@ -17,7 +17,7 @@ export default function BreadCrumbs() {
     </Typography>
   ];
   return (
-    <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+    <Breadcrumbs separator="a" aria-label="breadcrumb">
       {breadcrumbs}
     </Breadcrumbs>
   );

@@ -6,6 +6,9 @@ import SideBar from "../components/SideBar";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../store";
+import { resetForm } from "../../redux/employeeSlice";
 export default function HomePage() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search.split("?")[1]);
@@ -25,6 +28,7 @@ export default function HomePage() {
       }, 1000);
     }
   }, [query]);
+
   return (
     <div className="flex min-h-screen flex-col ">
       <header className="fixed left-0 right-0 top-0 z-30 flex h-16 flex-row bg-white px-8 py-2 shadow-md ">

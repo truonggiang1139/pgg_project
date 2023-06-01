@@ -29,7 +29,7 @@ export default function SalarynWages() {
         <InputForm
           label="Basic Salary"
           type="number"
-          value={String(employeeForm.basic_salary)}
+          value={employeeForm.basic_salary}
           target="basic_salary"
           errorMessage={errorMessage.basic_salary}
           required="Salary"
@@ -39,7 +39,7 @@ export default function SalarynWages() {
         <InputForm
           label="Basic Salary (Audit)"
           type="number"
-          value={String(employeeForm.audit_salary)}
+          value={employeeForm.audit_salary}
           target="audit_salary"
           errorMessage={errorMessage.audit_salary}
           required="Salary (Audit)"
@@ -49,7 +49,7 @@ export default function SalarynWages() {
         <InputForm
           label="Safety Insurance Amount"
           type="number"
-          value={String(employeeForm.safety_insurance)}
+          value={employeeForm.safety_insurance}
           target="safety_insurance"
           errorMessage={errorMessage.safety_insurance}
           required="Safety Insurance Amount"
@@ -59,7 +59,7 @@ export default function SalarynWages() {
         <InputForm
           label="Healthy Insurance Amount"
           type="number"
-          value={String(employeeForm.health_insurance)}
+          value={employeeForm.health_insurance}
           target="health_insurance"
           errorMessage={errorMessage.health_insurance}
           required=""
@@ -69,7 +69,7 @@ export default function SalarynWages() {
         <InputForm
           label="Meal Allowance"
           type="number"
-          value={String(employeeForm.meal_allowance)}
+          value={employeeForm.meal_allowance}
           target="meal_allowance"
           errorMessage={errorMessage.meal_allowance}
           required="Meal Allowance"

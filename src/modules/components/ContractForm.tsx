@@ -2,7 +2,7 @@ import ContractInput from "./ContractInput";
 import ContractTable from "./ContractTable";
 export default function ContractForm() {
   return (
-    <form className="  rounded-md border border-formContract">
+    <form className="  rounded-md border border-formContract pb-7">
       <div className="  bg-headerContractForm px-5 py-1 text-left text-xs font-bold text-gray">CONTRACT:</div>
       <div className="px-5 py-2 text-left text-sm text-gray">Please upload pdf, png, xlsx, docx file format!</div>
       <hr

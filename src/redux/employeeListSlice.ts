@@ -22,7 +22,7 @@ const initialState: initialStateType = {
   loading: false
 };
 
-export const deleteEmployee = createAsyncThunk("employee/deleteEmployee", async (array: number[]) => {
+export const deleteEmployee = createAsyncThunk("employeeList/deleteEmployee", async (array: number[]) => {
   let token = Cookies.get("token");
   const res = await axios.delete(`${API_PATHS.employee}/multiple-delete`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -32,7 +32,7 @@ export const deleteEmployee = createAsyncThunk("employee/deleteEmployee", async 
   return res.data.data;
 });
 export const getEmployeeList = createAsyncThunk(
-  "employee/getEmployeeList",
+  "employeeList/getEmployeeList",
   async ({ query, page }: { query: string; page: number }) => {
     let token = Cookies.get("token");
     const res = await axios.get(`${API_PATHS.employee}?search=${query}&page=${page}`, {

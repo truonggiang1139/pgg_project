@@ -14,10 +14,10 @@ import Others from "../components/Others";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store";
 import {
-  changeEmployeeForm,
-  checkValidContractForm,
-  checkValidEmployeeForm,
-  checkValidSalary,
+  addEmployee,
+  checkInvalidContractForm,
+  checkInvalidEmployeeForm,
+  checkInvalidSalary,
   resetForm
 } from "../../redux/employeeSlice";
 import { API_PATHS } from "../../configs/api";
@@ -41,6 +41,7 @@ export const employeeContext = createContext<employeeContextType>({
 });
 export default function CreateOrUpdatePage() {
   const [tab, setTab] = useState(0);
+  const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
   const employeeErrorTab = useSelector((state: RootState) => state.employee.employeeFormError);
   const contractErrorTab = useSelector((state: RootState) => state.employee.contractFormError);
   const salaryErrorTab = useSelector((state: RootState) => state.employee.salaryFormError);
@@ -52,16 +53,15 @@ export default function CreateOrUpdatePage() {
     benefit: []
   });
   const dispatch = useAppDispatch();
-
   const handleChange = (event: React.ChangeEvent<{}>, newTab: number) => {
     if (tab === 0) {
-      dispatch(checkValidEmployeeForm());
+      dispatch(checkInvalidEmployeeForm());
     }
     if (tab === 1) {
-      dispatch(checkValidContractForm());
+      dispatch(checkInvalidContractForm());
     }
     if (tab == 3) {
-      dispatch(checkValidSalary());
+      dispatch(checkInvalidSalary());
     }
     setTab(newTab);
   };
@@ -99,14 +99,13 @@ export default function CreateOrUpdatePage() {
     } catch (error) {}
   };
   useEffect(() => {
+    dispatch(resetForm());
     getData();
     setTimeout(() => {
-      dispatch(checkValidEmployeeForm());
-    }, 3000);
-    return () => {
-      resetForm();
-    };
-  }, []);
+      dispatch(checkInvalidEmployeeForm());
+    }, 2000);
+  }, [dispatch]);
+
   return (
     <div className="flex flex-col ">
       <header className="fixed left-0 right-0 top-0 z-30 flex h-16 flex-row bg-white px-8 py-2 shadow-md ">
@@ -122,7 +121,13 @@ export default function CreateOrUpdatePage() {
             <BreadCrumbs />
             <div className="my-4 flex justify-between">
               <div className=" text-left text-3xl">Employee Management</div>
-              <Button>Add </Button>
+              <Button
+                // className="rounded-md bg-tabSelected px-6 py-4 text-white outline-none"
+                disabled={employeeErrorTab || contractErrorTab || salaryErrorTab || !!employeeForm.type.length}
+                onClick={() => dispatch(addEmployee(employeeForm))}
+              >
+                Add
+              </Button>
             </div>
             <CustomTabs value={tab} onChange={handleChange}>
               <CustomeTab
