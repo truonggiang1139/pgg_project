@@ -112,7 +112,6 @@ const initialState: initialStateType = {
     employee_id: 1
   },
   contractFormData: {
-    employee_id: "",
     names: [],
     contract_dates: [],
     documents: [],
@@ -127,14 +126,25 @@ export const addEmployee = createAsyncThunk(
     const res = await axios.post(`${API_PATHS.employee}`, body, {
       headers: { Authorization: `Bearer ${token}` }
     });
+    const { employee } = getState() as RootState;
 
     if (body.documents.length) {
-      const { employee } = getState() as RootState;
       const formdata = new FormData();
       formdata.append("employee_id", res.data.data.id);
       employee.documentFormData.documents &&
         employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
       await axios.post(`${API_PATHS.uploadDoc}`, formdata, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    }
+    if (body.contracts.length) {
+      const formdata = new FormData();
+      formdata.append("employee_id", res.data.data.id);
+      employee.contractFormData.names.forEach((name) => formdata.append("names[]", name));
+      employee.contractFormData.contract_dates.forEach((date) => formdata.append("contract_dates[]", date));
+      employee.contractFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
+      formdata.append("modified_contracts[]", "");
+      await axios.post(`${API_PATHS.uploadContract}`, formdata, {
         headers: { Authorization: `Bearer ${token}` }
       });
     }
@@ -182,26 +192,24 @@ export const employeeSlice = createSlice({
       );
     },
     addDocumentFile: (state, action: PayloadAction<documentFormDataType>) => {
-      const { employee_id, documents } = action.payload;
+      const { documents } = action.payload;
       state.documentFormData.documents.push(...documents);
-
-      // state.dataFormDocument.deleted_ids && deleted_ids && state.dataFormDocument.deleted_ids.push(...deleted_ids);
     },
     removeDocumentFile: (state, action: PayloadAction<number>) => {
       let indexToRemove = state.documentFormData.documents.findIndex((obj) => obj.lastModified === action.payload);
       state.documentFormData.documents.splice(indexToRemove, 1);
-      console.log(current(state.documentFormData.documents));
     },
     addContractFile: (state, action: PayloadAction<contractFormDataType>) => {
-      const { employee_id, names, contract_dates, documents } = action.payload;
-      if (employee_id !== "0") {
-        state.contractFormData.employee_id = employee_id;
-      }
+      const { names, contract_dates, documents } = action.payload;
       if (names[0] != "") {
         state.contractFormData.names.push(...names);
         state.contractFormData.contract_dates.push(...contract_dates);
         state.contractFormData.documents.push(...documents);
       }
+    },
+    removeContractFile: (state, action: PayloadAction<number>) => {
+      state.contractFormData.documents.splice(action.payload, 1);
+      console.log(current(state.contractFormData.documents));
     }
   },
   extraReducers: (builder) => {
@@ -222,7 +230,9 @@ export const {
   checkInvalidContractForm,
   checkInvalidSalary,
   addDocumentFile,
-  removeDocumentFile
+  removeDocumentFile,
+  addContractFile,
+  removeContractFile
 } = employeeSlice.actions;
 const employeeReducer = employeeSlice.reducer;
 export default employeeReducer;

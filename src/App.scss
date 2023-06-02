@@ -50,6 +50,24 @@
 .MuiTableRow-root.Mui-selected {
   background-color: rgb(233, 249, 238);
 }
+.table__custom::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0);
+  width: 12px;
+  height: 12px;
+  z-index: 999999;
+}
+.table__custom::-webkit-scrollbar-button {
+  display: none;
+}
+.table__custom::-webkit-scrollbar-thumb {
+  background-color: rgb(215, 219, 223);
+  border-radius: 32px;
+  border: 2px solid rgb(241, 243, 245);
+}
+.table__custom::-webkit-scrollbar-track {
+  background-color: rgb(241, 243, 245);
+  border-radius: 32px;
+}
 
 .MuiTableCell-root {
   border: 1px white solid;

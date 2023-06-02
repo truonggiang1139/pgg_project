@@ -144,7 +144,7 @@ const DataTable = () => {
         }}
       />
       <div className="relative overflow-auto">
-        <TableContainer className="h-600 ">
+        <TableContainer className="table__custom h-600 ">
           <Table stickyHeader aria-label="sticky table" className="rounded-lg border border-white" size="small">
             <TableHead sx={{ borderRadius: "12px" }}>
               <TableRow

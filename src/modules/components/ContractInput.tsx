@@ -11,7 +11,7 @@ import iconRemove from "../../assets/iconRemove.svg";
 import classNames from "classnames";
 import { CustomTextField } from "../../CustomStyle/StyleInput";
 import { RootState, useAppDispatch } from "../../store";
-import { changeEmployeeForm } from "../../redux/employeeSlice";
+import { addContractFile, changeEmployeeForm } from "../../redux/employeeSlice";
 import { useSelector } from "react-redux";
 import { contractsType } from "../../constants/type";
 import moment from "moment";
@@ -60,6 +60,14 @@ export default function ContractInput() {
         deleted_at: null
       };
       dispatch(changeEmployeeForm({ target: "contracts", value: [...employeeForm.contracts, value] }));
+      dispatch(
+        addContractFile({
+          documents: [contractFile.file],
+          names: [contractFile.contractName],
+          contract_dates: [moment(contractFile.contractDate).format("YYYY-MM-DD")],
+          modified_contracts: []
+        })
+      );
       setContractFile({
         file: null,
         contractDate: "",

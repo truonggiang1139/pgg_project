@@ -3,6 +3,7 @@ import React from "react";
 import { RootState, useAppDispatch } from "../../store";
 import { useSelector } from "react-redux";
 import iconDelete from "../../assets/iconDelete.svg";
+import { changeEmployeeForm, removeContractFile } from "../../redux/employeeSlice";
 export default function ContractTable() {
   const dispatch = useAppDispatch();
   const contracts = useSelector((state: RootState) => state.employee.employeeForm.contracts);
@@ -12,6 +13,11 @@ export default function ContractTable() {
     { field: "contract_date", headerName: "Sign Date", width: 150 },
     { field: "Action", headerName: "Action.", width: 200 }
   ];
+  const handleDeleteContractFile = (id: number, index: number) => {
+    const newArray = contracts.filter((contract) => contract.id !== id);
+    dispatch(changeEmployeeForm({ target: "contracts", value: newArray }));
+    dispatch(removeContractFile(index));
+  };
   return (
     <TableContainer className="mx-3 h-200 ">
       <Table className="rounded-lg border border-white" size="small">
@@ -40,7 +46,12 @@ export default function ContractTable() {
                 <TableCell>
                   <div className="flex  justify-center">
                     <div className="min-w-100 "></div>
-                    <Button className="ml-2 h-6 rounded-md bg-red2 px-3 py-2 normal-case text-required hover:bg-red3 focus:outline-none ">
+                    <Button
+                      className="ml-2 h-6 rounded-md bg-red2 px-3 py-2 normal-case text-required hover:bg-red3 focus:outline-none "
+                      onClick={() => {
+                        handleDeleteContractFile(contract.id, index);
+                      }}
+                    >
                       <img src={iconDelete} alt="" />
                       <span className="ml-2">Delete</span>
                     </Button>

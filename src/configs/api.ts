@@ -8,5 +8,6 @@ export const API_PATHS = {
   department: `${API_HOST}/department`,
   grade: `${API_HOST}/grade`,
   benefit: `${API_HOST}/benefit`,
+  uploadContract: `${API_HOST}/contract/save-multiple`,
   uploadDoc: `${API_HOST}/employee-document/upload`
 };

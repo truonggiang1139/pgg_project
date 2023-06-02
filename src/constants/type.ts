@@ -196,7 +196,6 @@ export type documentType = {
 };
 
 export type contractFormDataType = {
-  employee_id: string;
   names: string[];
   contract_dates: string[];
   documents: File[];
