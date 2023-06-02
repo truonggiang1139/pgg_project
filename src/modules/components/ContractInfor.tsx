@@ -1,9 +1,8 @@
-import { FormHelperText, MenuItem, Select, Typography } from "@mui/material";
-import React, { useContext, useEffect, useMemo } from "react";
+import { Typography } from "@mui/material";
+import React, { useMemo } from "react";
 import DatePick from "./DatePick";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ContractForm from "./ContractForm";
-import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
+
 import { employeeTypeType } from "../../constants/type";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";

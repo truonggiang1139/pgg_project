@@ -13,6 +13,7 @@ function App() {
         <Route path="/employee" element={<HomePage />} />
         <Route path={ROUTES.login} element={<LoginPage />} />
         <Route path={ROUTES.createUpdate} element={<CreateOrUpdatePage />} />
+        <Route path={ROUTES.updateEmployee} element={<CreateOrUpdatePage />} />
       </Routes>
     </>
   );

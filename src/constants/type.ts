@@ -5,6 +5,7 @@ export type LoginFormType = {
 };
 
 export type EmployeeType = {
+  staff_id: string | null;
   id: number;
   name: string;
   gender: number | string;

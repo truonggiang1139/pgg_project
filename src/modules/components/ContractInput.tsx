@@ -15,6 +15,7 @@ import { addContractFile, changeEmployeeForm } from "../../redux/employeeSlice";
 import { useSelector } from "react-redux";
 import { contractsType } from "../../constants/type";
 import moment from "moment";
+import { useParams } from "react-router-dom";
 
 type contractFileType = {
   file: File | null;
@@ -33,6 +34,7 @@ export default function ContractInput() {
     contractFile: false
   });
   const dispatch = useAppDispatch();
+  const { idEmployee } = useParams();
   const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
   const checkInput = (target: string, value: string) => {
     if (!value) {
@@ -51,8 +53,8 @@ export default function ContractInput() {
     if (contractFile.file && contractFile.contractDate && contractFile.contractName) {
       const value: contractsType = {
         id: contractFile.file.lastModified,
-        employee_id: "0",
-        contract_date: moment(contractFile.file.lastModified).format("YYYY/MM/DD"),
+        employee_id: idEmployee ?? "0",
+        contract_date: moment(contractFile.contractDate).format("YYYY/MM/DD"),
         name: contractFile.contractName,
         document: "",
         created_at: "",

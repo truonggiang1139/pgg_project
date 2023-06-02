@@ -20,5 +20,9 @@ export const CustomTextField = styled(Input)(() => ({
   "&.Mui-error": {
     backgroundColor: "rgb(255, 239, 239)",
     border: "1px solid rgb(243, 174, 175)"
+  },
+  "&.Mui-disabled": {
+    backgroundColor: "rgba(0, 0, 0, 0.12)",
+    color: "rgb(104, 112, 118)"
   }
 }));

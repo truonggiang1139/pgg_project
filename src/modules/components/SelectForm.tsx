@@ -5,6 +5,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { genderType, marriageType } from "../../constants/type";
 import { useAppDispatch } from "../../store";
 import { changeEmployeeForm, validateEmployeeForm } from "../../redux/employeeSlice";
+import { useParams } from "react-router-dom";
 type SelectFormType = {
   label: string;
   value: string;
@@ -16,6 +17,7 @@ type SelectFormType = {
 };
 function SelectForm({ label, value, defaultValue, target, errorMessage, required, selectList }: SelectFormType) {
   const dispatch = useAppDispatch();
+  const idEmployee = useParams();
   return (
     <div className=" mb-4 flex items-center justify-between">
       <label className="text-left  ">
@@ -24,6 +26,7 @@ function SelectForm({ label, value, defaultValue, target, errorMessage, required
       </label>
       <div className="flex w-3/5 flex-col">
         <Select
+          disabled={target === "type" && !!idEmployee}
           value={value}
           defaultValue=""
           onChange={(e) => {

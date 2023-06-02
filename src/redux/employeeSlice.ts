@@ -40,6 +40,7 @@ const initialState: initialStateType = {
     id: 0,
     name: "",
     gender: "",
+    staff_id: null,
     mother_name: "",
     dob: "",
     pob: "",
@@ -119,6 +120,13 @@ const initialState: initialStateType = {
   }
 };
 
+export const getIdEmployee = createAsyncThunk("employeeId/get", async (id: number) => {
+  let token = Cookies.get("token");
+  const res = await axios.get(`${API_PATHS.employee}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return res.data.data;
+});
 export const addEmployee = createAsyncThunk(
   "employee/addEmployee",
   async (body: Omit<EmployeeType, "id">, { getState }) => {
@@ -150,13 +158,40 @@ export const addEmployee = createAsyncThunk(
     }
   }
 );
+export const updateEmployee = createAsyncThunk("employee/updateEmployee", async (body: EmployeeType, { getState }) => {
+  let token = Cookies.get("token");
+  const res = await axios.put(`${API_PATHS.employee}/${body.id}`, body, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  console.log(res.data.data);
+
+  const { employee } = getState() as RootState;
+  if (body.documents.length) {
+    const formdata = new FormData();
+    formdata.append("employee_id", res.data.data.id);
+    employee.documentFormData.documents &&
+      employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
+    await axios.post(`${API_PATHS.uploadDoc}`, formdata, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+  if (body.contracts.length) {
+    const formdata = new FormData();
+    formdata.append("employee_id", String(body.id));
+    employee.contractFormData.names.forEach((name) => formdata.append("names[]", name));
+    employee.contractFormData.contract_dates.forEach((date) => formdata.append("contract_dates[]", date));
+    employee.contractFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
+    formdata.append("modified_contracts[]", "");
+    await axios.post(`${API_PATHS.uploadContract}`, formdata, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+});
 export const employeeSlice = createSlice({
   name: "employee",
   initialState,
   reducers: {
-    resetForm: (state) => {
-      state = initialState;
-    },
+    resetForm: () => initialState,
     changeEmployeeForm: (state, action: PayloadAction<dataValueType>) => {
       const { target, value } = action.payload;
       state.employeeForm = { ...state.employeeForm, [target]: value };
@@ -219,6 +254,13 @@ export const employeeSlice = createSlice({
       })
       .addCase(addEmployee.fulfilled, (state) => {
         state.loading = false;
+      })
+      .addCase(getIdEmployee.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getIdEmployee.fulfilled, (state, acion) => {
+        state.loading = false;
+        state.employeeForm = acion.payload;
       });
   }
 });
