@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useMemo } from "react";
 import DatePick from "./DatePick";
 import InputForm from "./InputForm";
 import SelectForm from "./SelectForm";
-import { genderType, marriageType } from "../../constants/type";
+import { genderType } from "../../constants/type";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import axios from "axios";
-import { API_PATHS } from "../../configs/api";
-import Cookies from "js-cookie";
 import { employeeContext } from "../pages/CreateOrUpdatePage";
 import { CustomTextField } from "../../CustomStyle/StyleInput";
+import { useParams } from "react-router-dom";
 function PersonalForm() {
   const { marriageStatus } = useContext(employeeContext);
+  const { idEmployee } = useParams();
   const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
   const errorMessage = useSelector((state: RootState) => state.employee.errorMessage);
   const gender: genderType[] = useMemo(() => {
@@ -29,10 +28,12 @@ function PersonalForm() {
   return (
     <form className="flex justify-between px-3">
       <div className="leftForm flex w-48% flex-col">
-        <div className="  mb-4 flex items-center justify-between">
-          <label>NIK</label>
-          <CustomTextField className="w-3/5" disableUnderline disabled value={employeeForm.staff_id} />
-        </div>
+        {!!idEmployee && (
+          <div className="  mb-4 flex items-center justify-between">
+            <label>NIK</label>
+            <CustomTextField className="w-3/5" disableUnderline disabled value={employeeForm.staff_id ?? ""} />
+          </div>
+        )}
         <InputForm
           arrow={true}
           label="Name"

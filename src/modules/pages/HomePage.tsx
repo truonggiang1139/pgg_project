@@ -1,4 +1,4 @@
-import { InputAdornment, Popover, TextField, Typography } from "@mui/material";
+import { Button, InputAdornment, Popover, TextField, Typography } from "@mui/material";
 import logo from "../../assets/Rectangle 4.svg";
 import BreadCrumbs from "../components/BreadCrumbs";
 import DataTable from "../components/DataTable";
@@ -48,7 +48,9 @@ export default function HomePage() {
           <div className="text-2xl font-semibold">HR Management System</div>
         </div>
         <div className="flex items-center">
-          <button onClick={handleClick}>h</button>
+          <button onClick={handleClick} className="h-8  w-8 items-center rounded-1/2 bg-red-400">
+            g
+          </button>
           <Popover
             id={id}
             open={open}

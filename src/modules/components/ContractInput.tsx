@@ -4,7 +4,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as IconCalendar } from "../../assets/iconCalendar.svg";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import InputForm from "./InputForm";
 import { Button, FormControl } from "@mui/material";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import iconRemove from "../../assets/iconRemove.svg";
