@@ -1,24 +1,27 @@
-import React from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Typography } from "@mui/material";
-
 export default function BreadCrumbs() {
   const location = useLocation();
-  const pathnames = location.pathname;
-
-  const breadcrumbs = [
-    <Link className="text-link" key={1} to="/home">
-      MUI
-    </Link>,
-    <Typography key="3" color="text.primary">
-      MUI
-    </Typography>
-  ];
+  const crumbs = location.pathname.split("/");
+  const { idEmployee } = useParams();
   return (
-    <Breadcrumbs separator="a" aria-label="breadcrumb">
-      {breadcrumbs}
+    <Breadcrumbs separator="›" aria-label="breadcrumb">
+      <Link className="text-link" to={`/${crumbs[0]}`}>
+        General
+      </Link>
+      {crumbs.length > 2 ? (
+        <Link className="text-link" to={`/${crumbs[1]}`}>{`${
+          crumbs[1].charAt(0).toUpperCase() + crumbs[1].slice(1)
+        } Management`}</Link>
+      ) : (
+        <Typography className="text-black">{`${
+          crumbs[1].charAt(0).toUpperCase() + crumbs[1].slice(1)
+        } Management`}</Typography>
+      )}
+      {crumbs.length >= 3 && (
+        <Typography className="text-black">{idEmployee ? "Edit employee" : "Add new employee"}</Typography>
+      )}
     </Breadcrumbs>
   );
 }

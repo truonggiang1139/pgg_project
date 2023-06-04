@@ -43,7 +43,7 @@ function SelectForm({ label, value, defaultValue, target, errorMessage, required
           }}
         >
           {defaultValue === "Choose Marriage Status" && <MenuItem value="">NA</MenuItem>}
-          <MenuItem hidden value="">
+          <MenuItem sx={{ display: "none" }} value="">
             {defaultValue}
           </MenuItem>
 

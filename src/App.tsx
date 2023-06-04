@@ -5,13 +5,15 @@ import { ROUTES } from "./configs/routes";
 import PrivateRoute from "./PrivateRoute";
 import HomePage from "./modules/pages/HomePage";
 import CreateOrUpdatePage from "./modules/pages/CreateOrUpdatePage";
+import ForgotPassword from "./modules/auth/pages/ForgotPassword";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/employee" element={<HomePage />} />
+        <Route path={ROUTES.employee} element={<HomePage />} />
         <Route path={ROUTES.login} element={<LoginPage />} />
+        <Route path={ROUTES.forgotPassword} element={<ForgotPassword />} />
         <Route path={ROUTES.createUpdate} element={<CreateOrUpdatePage />} />
         <Route path={ROUTES.updateEmployee} element={<CreateOrUpdatePage />} />
       </Routes>

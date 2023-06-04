@@ -27,7 +27,7 @@ import iconError from "../../assets/iconError.svg";
 import { benefitType, departmentType, gradeType, marriageType, positionType } from "../../constants/type";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Header from "../components/Header";
 type employeeContextType = {
   marriageStatus: marriageType[];
@@ -47,7 +47,6 @@ export default function CreateOrUpdatePage() {
   const [tab, setTab] = useState(0);
   const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
   const { idEmployee } = useParams();
-
   const employeeErrorTab = useSelector((state: RootState) => state.employee.employeeFormError);
   const contractErrorTab = useSelector((state: RootState) => state.employee.contractFormError);
   const salaryErrorTab = useSelector((state: RootState) => state.employee.salaryFormError);
@@ -136,11 +135,20 @@ export default function CreateOrUpdatePage() {
             <div className="my-4 flex justify-between">
               <div className=" text-left text-3xl">Employee Management</div>
               <Button
-                // className="rounded-md bg-tabSelected px-6 py-4 text-white outline-none"
-                disabled={false}
+                color="primary"
+                variant="contained"
+                disableElevation
+                sx={{
+                  backgroundColor: "rgb(0, 145, 255)",
+                  paddingX: "30px",
+                  paddingY: "10px",
+                  borderRadius: "6px",
+                  textTransform: "none"
+                }}
+                disabled={true}
                 onClick={handleAddOrUpdEmployee}
               >
-                Add
+                {idEmployee ? "Save Charge" : "Add"}
               </Button>
             </div>
             <CustomTabs value={tab} onChange={handleChange}>

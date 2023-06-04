@@ -12,9 +12,7 @@ import Cookies from "js-cookie";
 import { API_PATHS } from "../../../configs/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../store";
-import { setUserName } from "../../../redux/userSlice";
+import { Link, useNavigate } from "react-router-dom";
 export default function LoginForm() {
   const [form, setForm] = useState<LoginFormType>({
     userName: "",
@@ -29,7 +27,6 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const handleChangeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, userName: event.target.value }));
     setErrorMessage((prev) => ({ ...prev, userName: "" }));
@@ -149,7 +146,7 @@ export default function LoginForm() {
             PaperProps: customPaperProps
           }}
         >
-          <MenuItem hidden value="">
+          <MenuItem sx={{ display: "none" }} value="">
             Select Factory
           </MenuItem>
           <MenuItem value="1">SBM</MenuItem>
@@ -160,19 +157,19 @@ export default function LoginForm() {
       {!loading ? (
         <Button
           type="submit"
-          className="mt-3  h-9 w-full border-none bg-blue-500 text-white outline-none hover:bg-blue-600"
+          className="my-3 h-12  w-full rounded-md border-none bg-blue-500 text-white outline-none hover:bg-blue-600"
         >
           Sign In
         </Button>
       ) : (
-        <Button className="mt-3 h-9 w-full border-none bg-slate-100" disabled>
+        <Button className="my-3 h-12 w-full rounded-md border-none bg-slate-100" disabled>
           <CircularProgress color="inherit" size="20px" />
         </Button>
       )}
 
-      <a href="" className="text-xs text-blue-500  hover:underline">
+      <Link to={"/auth/forgot-password"} className="mt-6 text-sm text-blue-400  hover:underline">
         Forgot Your Password?
-      </a>
+      </Link>
       <ToastContainer
         position="top-right"
         autoClose={3000}
