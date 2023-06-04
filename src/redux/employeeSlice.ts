@@ -139,13 +139,13 @@ export const addEmployee = createAsyncThunk(
     if (body.documents.length) {
       const formdata = new FormData();
       formdata.append("employee_id", res.data.data.id);
-      employee.documentFormData.documents &&
-        employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
+      employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
+
       await axios.post(`${API_PATHS.uploadDoc}`, formdata, {
         headers: { Authorization: `Bearer ${token}` }
       });
     }
-    if (body.contracts.length) {
+    if (true) {
       const formdata = new FormData();
       formdata.append("employee_id", res.data.data.id);
       employee.contractFormData.names.forEach((name) => formdata.append("names[]", name));
@@ -160,17 +160,15 @@ export const addEmployee = createAsyncThunk(
 );
 export const updateEmployee = createAsyncThunk("employee/updateEmployee", async (body: EmployeeType, { getState }) => {
   let token = Cookies.get("token");
-  const res = await axios.put(`${API_PATHS.employee}/${body.id}`, body, {
+  await axios.put(`${API_PATHS.employee}/${body.id}`, body, {
     headers: { Authorization: `Bearer ${token}` }
   });
-  console.log(res.data.data);
 
   const { employee } = getState() as RootState;
   if (body.documents.length) {
     const formdata = new FormData();
-    formdata.append("employee_id", res.data.data.id);
-    employee.documentFormData.documents &&
-      employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
+    formdata.append("employee_id", String(body.id));
+    employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
     await axios.post(`${API_PATHS.uploadDoc}`, formdata, {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -261,6 +259,7 @@ export const employeeSlice = createSlice({
       .addCase(getIdEmployee.fulfilled, (state, acion) => {
         state.loading = false;
         state.employeeForm = acion.payload;
+        console.log(state.employeeForm.contracts);
       });
   }
 });

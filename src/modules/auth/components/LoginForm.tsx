@@ -13,6 +13,8 @@ import { API_PATHS } from "../../../configs/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../../store";
+import { setUserName } from "../../../redux/userSlice";
 export default function LoginForm() {
   const [form, setForm] = useState<LoginFormType>({
     userName: "",
@@ -27,6 +29,7 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const handleChangeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, userName: event.target.value }));
     setErrorMessage((prev) => ({ ...prev, userName: "" }));
@@ -84,7 +87,7 @@ export default function LoginForm() {
       });
       Cookies.set("token", res.data.data.token);
       setTimeout(() => {
-        navigate("/home", { replace: true });
+        navigate("/employee", { replace: true });
       }, 1000);
     } catch (error: any) {
       toast.warn(error.response.data.message, {

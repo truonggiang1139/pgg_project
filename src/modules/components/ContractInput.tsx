@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as IconCalendar } from "../../assets/iconCalendar.svg";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button, FormControl } from "@mui/material";
+import { Box, Button, FormControl, Typography } from "@mui/material";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import iconRemove from "../../assets/iconRemove.svg";
 import classNames from "classnames";
@@ -45,35 +45,42 @@ export default function ContractInput() {
   const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
     setContractFile((prev) => ({ ...prev, file: selectedFile || null }));
+    setErrorMessage((prev) => ({ ...prev, contractFile: false }));
   };
   const handleAddContract = () => {
     checkInput("contractDate", contractFile.contractDate);
     checkInput("contractName", contractFile.contractName);
-    if (contractFile.file && contractFile.contractDate && contractFile.contractName) {
-      const value: contractsType = {
-        id: contractFile.file.lastModified,
-        employee_id: idEmployee ?? "0",
-        contract_date: moment(contractFile.contractDate).format("YYYY/MM/DD"),
-        name: contractFile.contractName,
-        document: "",
-        created_at: "",
-        updated_at: "",
-        deleted_at: null
-      };
-      dispatch(changeEmployeeForm({ target: "contracts", value: [...employeeForm.contracts, value] }));
-      dispatch(
-        addContractFile({
-          documents: [contractFile.file],
-          names: [contractFile.contractName],
-          contract_dates: [moment(contractFile.contractDate).format("YYYY-MM-DD")],
-          modified_contracts: []
-        })
-      );
-      setContractFile({
-        file: null,
-        contractDate: "",
-        contractName: ""
-      });
+
+    if (contractFile.contractDate && contractFile.contractName) {
+      if (contractFile.file === null) {
+        setErrorMessage((prev) => ({ ...prev, contractFile: true }));
+      } else {
+        setErrorMessage((prev) => ({ ...prev, contractFile: false }));
+        const value: contractsType = {
+          id: contractFile.file.lastModified,
+          employee_id: idEmployee ?? "0",
+          contract_date: moment(contractFile.contractDate).format("YYYY/MM/DD"),
+          name: contractFile.contractName,
+          document: "",
+          created_at: "",
+          updated_at: "",
+          deleted_at: null
+        };
+        dispatch(changeEmployeeForm({ target: "contracts", value: [...employeeForm.contracts, value] }));
+        dispatch(
+          addContractFile({
+            documents: [contractFile.file],
+            names: [contractFile.contractName],
+            contract_dates: [moment(contractFile.contractDate).format("YYYY-MM-DD")],
+            modified_contracts: []
+          })
+        );
+        setContractFile({
+          file: null,
+          contractDate: "",
+          contractName: ""
+        });
+      }
     }
   };
   return (
@@ -126,30 +133,43 @@ export default function ContractInput() {
         </FormControl>
       </div>
       <div className="flex flex-wrap justify-between">
-        <Button
-          variant="contained"
-          component="label"
-          sx={{
-            color: "rgb(0, 145, 255)",
-            backgroundColor: "rgb(237, 246, 255)",
-            border: "1px dashed",
-            width: "48%",
-            marginBottom: "12px",
-            boxShadow: "none",
-            minWidth: "195px",
-            borderRadius: "6px",
-            height: "48px",
-            textTransform: "none",
-            "&:hover": {
+        <Box>
+          <Button
+            variant="contained"
+            component="label"
+            sx={{
+              color: "rgb(0, 145, 255)",
+              backgroundColor: "rgb(237, 246, 255)",
+              border: "1px dashed",
+              width: "48%",
+              marginBottom: "12px",
               boxShadow: "none",
-              backgroundColor: "rgba(0, 145, 255, 0.08)"
-            }
-          }}
-        >
-          <FileUploadOutlinedIcon />
-          Upload File
-          <input type="file" accept="image/*,.pdf,.csv,.xlsx,.docx" hidden onChange={handleUploadFile} />
-        </Button>
+              minWidth: "195px",
+              borderRadius: "6px",
+              height: "48px",
+              textTransform: "none",
+              "&:hover": {
+                boxShadow: "none",
+                backgroundColor: "rgba(0, 145, 255, 0.08)"
+              }
+            }}
+          >
+            <FileUploadOutlinedIcon />
+            Upload File
+            <input type="file" accept="image/*,.pdf,.csv,.xlsx,.docx" hidden onChange={handleUploadFile} />
+          </Button>
+          {errorMessage.contractFile && (
+            <Typography
+              sx={{
+                textAlign: "left",
+                fontSize: "12px",
+                color: "rgb(229, 72, 77)"
+              }}
+            >
+              No file choosen
+            </Typography>
+          )}
+        </Box>
         <Button
           onClick={handleAddContract}
           variant="contained"

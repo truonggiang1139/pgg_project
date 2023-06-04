@@ -138,7 +138,7 @@ export default function Others() {
           <TextAreaStyle
             name="remark"
             className="w-3/5"
-            value={employeeForm.remark}
+            value={employeeForm.remark ?? ""}
             onChange={(e) => dispatch(changeEmployeeForm({ target: "remark", value: e.target.value }))}
           />
         </div>

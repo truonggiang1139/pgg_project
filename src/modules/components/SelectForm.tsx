@@ -17,7 +17,7 @@ type SelectFormType = {
 };
 function SelectForm({ label, value, defaultValue, target, errorMessage, required, selectList }: SelectFormType) {
   const dispatch = useAppDispatch();
-  const idEmployee = useParams();
+  const { idEmployee } = useParams();
   return (
     <div className=" mb-4 flex items-center justify-between">
       <label className="text-left  ">

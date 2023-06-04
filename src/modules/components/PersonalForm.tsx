@@ -25,6 +25,7 @@ function PersonalForm() {
       }
     ];
   }, []);
+
   return (
     <form className="flex justify-between px-3">
       <div className="leftForm flex w-48% flex-col">
@@ -59,7 +60,7 @@ function PersonalForm() {
           target="mother_name"
           type="text"
           errorMessage={errorMessage.mother_name}
-          value={employeeForm.mother_name}
+          value={employeeForm.mother_name ?? ""}
           required=""
           length={50}
         />
@@ -70,7 +71,7 @@ function PersonalForm() {
           target="pob"
           type="text"
           errorMessage={errorMessage.pob}
-          value={employeeForm.pob}
+          value={employeeForm.pob ?? ""}
           required=""
           length={50}
         />
@@ -100,7 +101,7 @@ function PersonalForm() {
           target="home_address_1"
           type="text"
           errorMessage={errorMessage.home_address_1}
-          value={employeeForm.home_address_1}
+          value={employeeForm.home_address_1 ?? ""}
           required=""
           length={100}
         />
@@ -110,7 +111,7 @@ function PersonalForm() {
           target="home_address_2"
           type="text"
           errorMessage={errorMessage.home_address_2}
-          value={employeeForm.home_address_2}
+          value={employeeForm.home_address_2 ?? ""}
           required=""
           length={100}
         />
@@ -123,7 +124,7 @@ function PersonalForm() {
           target="mobile_no"
           type="number"
           errorMessage={errorMessage.mobile_no}
-          value={employeeForm.mobile_no}
+          value={employeeForm.mobile_no ?? ""}
           required=""
           length={20}
         />
@@ -133,17 +134,17 @@ function PersonalForm() {
           target="tel_no"
           type="number"
           errorMessage={errorMessage.tel_no}
-          value={employeeForm.tel_no}
+          value={employeeForm.tel_no ?? ""}
           required=""
           length={20}
         />
         <SelectForm
           label="Marriage Status"
           defaultValue="Choose Marriage Status"
-          errorMessage={errorMessage.marriage_id}
+          errorMessage={errorMessage.marriage_id ?? ""}
           required=""
           target="marriage_id"
-          value={employeeForm.marriage_id}
+          value={employeeForm.marriage_id ?? ""}
           selectList={marriageStatus}
         />
         <InputForm
@@ -152,7 +153,7 @@ function PersonalForm() {
           target="card_number"
           type="number"
           errorMessage={errorMessage.card_number}
-          value={employeeForm.card_number}
+          value={employeeForm.card_number ?? ""}
           required=""
           length={30}
         />
@@ -162,7 +163,7 @@ function PersonalForm() {
           target="bank_account_no"
           type="number"
           errorMessage={errorMessage.bank_account_no}
-          value={employeeForm.bank_account_no}
+          value={employeeForm.bank_account_no ?? ""}
           required=""
           length={30}
         />
@@ -172,7 +173,7 @@ function PersonalForm() {
           target="bank_name"
           type="text"
           errorMessage={errorMessage.bank_name}
-          value={employeeForm.bank_name}
+          value={employeeForm.bank_name ?? ""}
           required=""
           length={100}
         />
@@ -182,7 +183,7 @@ function PersonalForm() {
           target="family_card_number"
           type="number"
           errorMessage={errorMessage.family_card_number}
-          value={employeeForm.family_card_number}
+          value={employeeForm.family_card_number ?? ""}
           required=""
           length={30}
         />
@@ -192,7 +193,7 @@ function PersonalForm() {
           target="safety_insurance_no"
           type="number"
           errorMessage={errorMessage.safety_insurance_no}
-          value={employeeForm.safety_insurance_no}
+          value={employeeForm.safety_insurance_no ?? ""}
           required=""
           length={30}
         />
@@ -202,7 +203,7 @@ function PersonalForm() {
           target="health_insurance_no"
           type="number"
           errorMessage={errorMessage.health_insurance_no}
-          value={employeeForm.health_insurance_no}
+          value={employeeForm.health_insurance_no ?? ""}
           required=""
           length={30}
         />

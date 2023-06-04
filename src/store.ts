@@ -1,12 +1,14 @@
-import employeeListReducer, { employeeListSlice } from "./redux/employeeListSlice";
+import employeeListReducer from "./redux/employeeListSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import employeeReducer from "./redux/employeeSlice";
+import userReducer from "./redux/userSlice";
 
 export const store = configureStore({
   reducer: {
     employeeList: employeeListReducer,
-    employee: employeeReducer
+    employee: employeeReducer,
+    userDetail: userReducer
   }
 });
 
