@@ -13,6 +13,7 @@ import { API_PATHS } from "../../../configs/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../configs/routes";
 export default function LoginForm() {
   const [form, setForm] = useState<LoginFormType>({
     userName: "",
@@ -84,7 +85,7 @@ export default function LoginForm() {
       });
       Cookies.set("token", res.data.data.token);
       setTimeout(() => {
-        navigate("/employee", { replace: true });
+        navigate(ROUTES.employee, { replace: true });
       }, 1000);
     } catch (error: any) {
       toast.warn(error.response.data.message, {
@@ -167,7 +168,7 @@ export default function LoginForm() {
         </Button>
       )}
 
-      <Link to={"/auth/forgot-password"} className="mt-6 text-sm text-blue-400  hover:underline">
+      <Link to={ROUTES.forgotPassword} className="mt-6 text-sm text-blue-400  hover:underline">
         Forgot Your Password?
       </Link>
       <ToastContainer

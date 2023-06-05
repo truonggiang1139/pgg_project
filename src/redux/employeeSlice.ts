@@ -75,7 +75,10 @@ const initialState: initialStateType = {
     grade: null,
     benefits: [],
     remark: "",
-    documents: []
+    documents: [],
+    grade_name: null,
+    marriage_code: null,
+    position_name: null
   },
   errorMessage: {
     name: "",

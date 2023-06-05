@@ -1,15 +1,17 @@
 import { Button, FormControl, FormHelperText } from "@mui/material";
 import React, { useState } from "react";
 import { CustomTextField } from "../../../CustomStyle/StyleInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API_PATHS } from "../../../configs/api";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import { ROUTES } from "../../../configs/routes";
 export default function ForgotForm() {
   const [value, setValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     validateEmail(e.target.value);
@@ -33,9 +35,10 @@ export default function ForgotForm() {
     }
     try {
       setLoading(true);
-      const res = await axios.post(API_PATHS.forgotPassword, {
+      await axios.post(API_PATHS.forgotPassword, {
         email: value
       });
+      navigate(ROUTES.login, { replace: true });
     } catch (error: any) {
       toast.warn(error.response.data.message, {
         className: "bg-red-100 text-red-600 font-medium"
@@ -63,22 +66,39 @@ export default function ForgotForm() {
           />
           {!!errorMessage && <FormHelperText sx={{ color: "rgb(229, 72, 77)" }}>{errorMessage}</FormHelperText>}
         </FormControl>
-        <Button
-          variant="contained"
-          type="submit"
-          disableElevation
-          sx={{
-            backgroundColor: "rgb(0, 145, 255)",
-            height: "48px",
-            borderRadius: "6px",
-            marginTop: "16px",
-            fontWeight: "bold",
-            textTransform: "none"
-          }}
-        >
-          Confirm & Send OTP
-        </Button>
-        <Link to="/auth/login" className="mt-6 text-sm text-blue-400  hover:underline">
+        {loading ? (
+          <Button
+            disabled
+            disableElevation
+            sx={{
+              backgroundColor: "rgba(193, 200, 205, 0.24)",
+              height: "48px",
+              borderRadius: "6px",
+              marginTop: "16px",
+              fontWeight: "bold",
+              textTransform: "none"
+            }}
+          >
+            <CircularProgress color="inherit" size="20px" />
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            type="submit"
+            disableElevation
+            sx={{
+              backgroundColor: "rgb(0, 145, 255)",
+              height: "48px",
+              borderRadius: "6px",
+              marginTop: "16px",
+              fontWeight: "bold",
+              textTransform: "none"
+            }}
+          >
+            Confirm & Send OTP
+          </Button>
+        )}
+        <Link to={ROUTES.login} className="mt-6 text-sm text-blue-400  hover:underline">
           Back to Sign In
         </Link>
         <ToastContainer

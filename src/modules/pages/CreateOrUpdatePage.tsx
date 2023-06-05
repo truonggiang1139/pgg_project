@@ -112,10 +112,11 @@ export default function CreateOrUpdatePage() {
     } catch (error) {}
   };
   useEffect(() => {
+    getData();
     if (idEmployee) {
       dispatch(getIdEmployee(Number(idEmployee)));
+      return;
     }
-    getData();
     setTimeout(() => {
       dispatch(checkInvalidEmployeeForm());
     }, 2000);
@@ -145,7 +146,6 @@ export default function CreateOrUpdatePage() {
                   borderRadius: "6px",
                   textTransform: "none"
                 }}
-                disabled={true}
                 onClick={handleAddOrUpdEmployee}
               >
                 {idEmployee ? "Save Charge" : "Add"}

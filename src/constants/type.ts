@@ -19,6 +19,7 @@ export type EmployeeType = {
   mobile_no: string;
   tel_no: string;
   marriage_id: string;
+  marriage_code: null;
   card_number: string;
   bank_account_no: string;
   bank_name: string;
@@ -29,6 +30,7 @@ export type EmployeeType = {
   contracts: contractsType[];
   type: string;
   position_id: number | string;
+  position_name: string | null;
   department_id: number | string;
   entitle_ot: boolean;
   meal_allowance_paid: boolean;
@@ -40,6 +42,7 @@ export type EmployeeType = {
   health_insurance: string;
   meal_allowance: string;
   grade_id: number | null;
+  grade_name: string | null;
   grade: gradeType | null;
   benefits: Number[];
   remark: string;
@@ -101,28 +104,6 @@ export type Contract = {
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
-};
-
-export type FormEmployee = {
-  nik: string;
-  name: string;
-  gender: string;
-  motherName: string;
-  dateOfBirth: string;
-  placeOfBirth: string;
-  ktpNo: string;
-  nationalCardId: string;
-  homeAddress1: string;
-  homeAddress2: string;
-  mobileNo: string;
-  telNo: string;
-  marriageStatus: string;
-  bankCardNo: string;
-  bankAccountNo: string;
-  bankName: string;
-  familyCardNumber: string;
-  safetyInsuranceNo: string;
-  healthInsuranceNo: string;
 };
 
 export type contractsType = {

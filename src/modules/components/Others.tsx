@@ -33,6 +33,7 @@ export default function Others() {
   const [benefitList, setBenefitList] = useState<benefitType[]>([]);
   const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
   const dispatch = useAppDispatch();
+  const handleChangeGrade = (event: React.SyntheticEvent<Element, Event>, value: unknown) => {};
   const handleChangeBenefits = (event: React.SyntheticEvent<Element, Event>, value: unknown) => {
     setBenefitList((prev) => (prev = value as benefitType[]));
     const benefitList = (value as benefitType[]).map((item) => item.id);
@@ -85,6 +86,10 @@ export default function Others() {
               dispatch(
                 changeEmployeeForm({ target: "grade_id", value: value !== null ? (value as gradeType).id : null })
               );
+              setBenefitList([]);
+              if (value) {
+                dispatch(changeEmployeeForm({ target: "benefits", value: [] }));
+              }
             }}
             options={grade}
             getOptionLabel={(option) => (option as gradeType).name}

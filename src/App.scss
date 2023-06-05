@@ -71,8 +71,8 @@
 
 .MuiTableCell-root {
   border: 1px white solid !important;
-  color: rgb(104, 112, 118);
-  font-size: 12px;
+  color: rgb(104, 112, 118) !important;
+  font-size: 12px !important;
 }
 
 .MuiTableCell-head {

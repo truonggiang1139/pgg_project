@@ -5,6 +5,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { ReactComponent as IconClose } from "../../assets/iconClose.svg";
 import { API_PATHS } from "../../configs/api";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../configs/routes";
 type userDetailType = {
   id: number;
   username: string;
@@ -56,6 +58,7 @@ export default function Header() {
     position_name: ""
   });
   const [openDialog, setOpenDialog] = useState(false);
+  const navigate = useNavigate();
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
   };
@@ -78,7 +81,13 @@ export default function Header() {
     });
     setUserDetail(res.data.data);
   };
-  const handleLogout = () => {};
+  const handleLogout = async () => {
+    await axios.post(API_PATHS.logOut, {
+      headers: { Authorization: `Bearer ${Cookies.get("token")}` }
+    });
+    Cookies.remove("token");
+    navigate(ROUTES.login);
+  };
   useEffect(() => {
     getUserDetail();
   }, []);
