@@ -4,6 +4,7 @@ export const API_PATHS = {
   signIn: `${API_HOST}/login`,
   forgotPassword: `${API_HOST}/forgot-password`,
   logOut: `${API_HOST}/logout`,
+
   detail: `${API_HOST}/user/detail`,
   employee: `${API_HOST}/employee`,
   marriage: `${API_HOST}/marriage`,
