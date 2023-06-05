@@ -1,8 +1,6 @@
 import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import SideBar from "../components/SideBar";
 import BreadCrumbs from "../components/BreadCrumbs";
-
-import logo from "../../assets/Rectangle 4.svg";
 import { Button } from "@mui/material";
 import { CustomTabs } from "../../CustomStyle/StyleTabs";
 import { CustomeTab } from "../../CustomStyle/StyleTab";
@@ -27,8 +25,10 @@ import iconError from "../../assets/iconError.svg";
 import { benefitType, departmentType, gradeType, marriageType, positionType } from "../../constants/type";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useLocation, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 type employeeContextType = {
   marriageStatus: marriageType[];
   department: departmentType[];
@@ -50,7 +50,7 @@ export default function CreateOrUpdatePage() {
   const employeeErrorTab = useSelector((state: RootState) => state.employee.employeeFormError);
   const contractErrorTab = useSelector((state: RootState) => state.employee.contractFormError);
   const salaryErrorTab = useSelector((state: RootState) => state.employee.salaryFormError);
-
+  const navigate = useNavigate();
   const [data, setData] = useState({
     marriageStatus: [],
     department: [],
@@ -71,12 +71,18 @@ export default function CreateOrUpdatePage() {
     }
     setTab(newTab);
   };
-  const handleAddOrUpdEmployee = () => {
-    if (idEmployee) {
-      dispatch(updateEmployee(employeeForm));
-      return;
-    }
-    dispatch(addEmployee(employeeForm));
+  const handleAddOrUpdEmployee = async () => {
+    const result: any = await (idEmployee
+      ? dispatch(updateEmployee(employeeForm))
+      : dispatch(addEmployee(employeeForm)));
+
+    setTimeout(() => {
+      navigate("/employee");
+    }, 1500);
+
+    toast.warn("", {
+      className: "bg-red-100 text-red-600 font-medium"
+    });
   };
   const getData = async () => {
     try {
@@ -115,6 +121,7 @@ export default function CreateOrUpdatePage() {
     getData();
     if (idEmployee) {
       dispatch(getIdEmployee(Number(idEmployee)));
+
       return;
     }
     setTimeout(() => {
@@ -212,6 +219,20 @@ export default function CreateOrUpdatePage() {
           <footer className="sticky top-full p-8 text-xs">Copyright © 2022. All Rights Reserved</footer>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        limit={3}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        style={{ width: "300px" }}
+      />
     </div>
   );
 }

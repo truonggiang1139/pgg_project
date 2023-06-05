@@ -82,7 +82,7 @@ export default function Header() {
     setUserDetail(res.data.data);
   };
   const handleLogout = async () => {
-    await axios.post(API_PATHS.logOut, {
+    await axios.post(API_PATHS.logOut, "", {
       headers: { Authorization: `Bearer ${Cookies.get("token")}` }
     });
     Cookies.remove("token");

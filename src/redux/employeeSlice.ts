@@ -137,6 +137,11 @@ export const addEmployee = createAsyncThunk(
     const res = await axios.post(`${API_PATHS.employee}`, body, {
       headers: { Authorization: `Bearer ${token}` }
     });
+
+    // if (!res.ok) {
+    //   return rejectWithValue(response.status);
+    // }
+
     const { employee } = getState() as RootState;
 
     if (body.documents.length) {
@@ -163,7 +168,7 @@ export const addEmployee = createAsyncThunk(
 );
 export const updateEmployee = createAsyncThunk("employee/updateEmployee", async (body: EmployeeType, { getState }) => {
   let token = Cookies.get("token");
-  await axios.put(`${API_PATHS.employee}/${body.id}`, body, {
+  const res = await axios.put(`${API_PATHS.employee}/${body.id}`, body, {
     headers: { Authorization: `Bearer ${token}` }
   });
 
@@ -245,7 +250,6 @@ export const employeeSlice = createSlice({
     },
     removeContractFile: (state, action: PayloadAction<number>) => {
       state.contractFormData.documents.splice(action.payload, 1);
-      console.log(current(state.contractFormData.documents));
     }
   },
   extraReducers: (builder) => {
@@ -259,10 +263,15 @@ export const employeeSlice = createSlice({
       .addCase(getIdEmployee.pending, (state) => {
         state.loading = true;
       })
+      .addCase(updateEmployee.rejected, (state, action) => {
+        console.log(action.payload);
+      })
+      .addCase(updateEmployee.fulfilled, (state, action) => {
+        console.log(action.payload);
+      })
       .addCase(getIdEmployee.fulfilled, (state, acion) => {
         state.loading = false;
         state.employeeForm = acion.payload;
-        console.log(state.employeeForm.contracts);
       });
   }
 });

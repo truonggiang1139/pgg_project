@@ -1,5 +1,5 @@
 import { Button, Select, TextField, Typography, styled } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { employeeContext } from "../pages/CreateOrUpdatePage";
 import { CustomAutoComplete } from "../../CustomStyle/StyleAutoComplete";
 import { benefitType, documentType, gradeType } from "../../constants/type";
@@ -11,6 +11,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import TableDocument from "./TableDocument";
 import moment from "moment";
+import { useParams } from "react-router-dom";
 const TextAreaStyle = styled("textarea")(({}) => ({
   width: "100%",
   flexGrow: 1,
@@ -29,14 +30,26 @@ const TextAreaStyle = styled("textarea")(({}) => ({
   }
 }));
 export default function Others() {
+  const { idEmployee } = useParams();
   const { grade, benefit } = useContext(employeeContext);
-  const [benefitList, setBenefitList] = useState<benefitType[]>([]);
   const employeeForm = useSelector((state: RootState) => state.employee.employeeForm);
+  const [benefitList, setBenefitList] = useState<benefitType[] | Number[]>(() => {
+    return idEmployee ? employeeForm.benefits : [];
+  });
+
   const dispatch = useAppDispatch();
-  const handleChangeGrade = (event: React.SyntheticEvent<Element, Event>, value: unknown) => {};
+  const handleChangeGrade = (event: React.SyntheticEvent<Element, Event>, value: unknown) => {
+    dispatch(changeEmployeeForm({ target: "grade", value: value !== null ? (value as gradeType) : null }));
+    dispatch(changeEmployeeForm({ target: "grade_id", value: value !== null ? (value as gradeType).id : null }));
+    setBenefitList([]);
+    if (value) {
+      dispatch(changeEmployeeForm({ target: "benefits", value: [] }));
+    }
+  };
   const handleChangeBenefits = (event: React.SyntheticEvent<Element, Event>, value: unknown) => {
     setBenefitList((prev) => (prev = value as benefitType[]));
     const benefitList = (value as benefitType[]).map((item) => item.id);
+
     dispatch(changeEmployeeForm({ target: "benefits", value: benefitList }));
   };
   const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +66,7 @@ export default function Others() {
       dispatch(changeEmployeeForm({ target: "documents", value: [newValue, ...employeeForm.documents] }));
     }
   };
+
   return (
     <div className="mt-3 w-full rounded-xl bg-dataTable  p-6">
       <header className="flex  items-center justify-between">
@@ -80,23 +94,18 @@ export default function Others() {
           <CustomAutoComplete
             className=" w-3/5 flex-col"
             disablePortal
-            value={employeeForm.grade}
-            onChange={(e, value) => {
-              dispatch(changeEmployeeForm({ target: "grade", value: value !== null ? (value as gradeType) : null }));
-              dispatch(
-                changeEmployeeForm({ target: "grade_id", value: value !== null ? (value as gradeType).id : null })
-              );
-              setBenefitList([]);
-              if (value) {
-                dispatch(changeEmployeeForm({ target: "benefits", value: [] }));
-              }
+            defaultValue={() => {
+              const defaultGrade = grade.find((item) => item.id === employeeForm.grade_id) || null;
+              dispatch(changeEmployeeForm({ target: "grade", value: defaultGrade }));
+              return defaultGrade;
             }}
+            onChange={handleChangeGrade}
             options={grade}
             getOptionLabel={(option) => (option as gradeType).name}
             renderInput={(params) => <TextField {...params} />}
           />
         </div>
-        {!!employeeForm.grade?.benefits.length && (
+        {!!employeeForm?.grade?.benefits && (
           <div className=" mb-4 flex items-center justify-between">
             <div className="w-2/5"></div>
             <div className="flex w-3/5 flex-row flex-wrap">

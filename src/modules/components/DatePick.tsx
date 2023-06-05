@@ -39,6 +39,8 @@ function DatePick({ target, value, errorMessage, label }: propsDatePick) {
           isClearable
           onChange={(date: Date | null) => {
             const value = date !== null ? date.toISOString().slice(0, 10) : "";
+            console.log(value);
+
             dispatch(changeEmployeeForm({ target, value }));
             dispatch(validateEmployeeForm({ target, value, required: "required", length: 100 }));
           }}
