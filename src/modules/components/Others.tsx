@@ -62,7 +62,13 @@ export default function Others() {
         document: selectedFile.name,
         updated_at: null
       };
-      dispatch(addDocumentFile({ employee_id: 1, documents: [selectedFile] }));
+      dispatch(
+        addDocumentFile({
+          employee_id: 1,
+          documents: [selectedFile],
+          deleted_ids: []
+        })
+      );
       dispatch(changeEmployeeForm({ target: "documents", value: [newValue, ...employeeForm.documents] }));
     }
   };

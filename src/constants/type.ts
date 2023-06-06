@@ -188,4 +188,5 @@ export type contractFormDataType = {
 export type documentFormDataType = {
   employee_id: number | null;
   documents: File[];
+  deleted_ids: number[];
 };

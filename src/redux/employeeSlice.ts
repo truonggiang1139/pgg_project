@@ -8,7 +8,7 @@ import {
   gradeType
 } from "./../constants/type";
 import Cookies from "js-cookie";
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_PATHS } from "../configs/api";
 import { RootState } from "../store";
@@ -111,7 +111,8 @@ const initialState: initialStateType = {
   loading: false,
   documentFormData: {
     documents: [],
-    employee_id: 1
+    employee_id: 1,
+    deleted_ids: []
   },
   contractFormData: {
     employee_id: 1,
@@ -144,7 +145,6 @@ export const addEmployee = createAsyncThunk(
         const formdata = new FormData();
         formdata.append("employee_id", res.data.data.id);
         employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
-
         await axios.post(`${API_PATHS.uploadDoc}`, formdata, {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -176,24 +176,24 @@ export const updateEmployee = createAsyncThunk("employee/updateEmployee", async 
 
     const { employee } = getState() as RootState;
 
-    if (body.documents.length) {
+    if (true) {
       const formdata = new FormData();
       formdata.append("employee_id", String(body.id));
       employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
+      employee.documentFormData.deleted_ids.forEach((id) => formdata.append("deleted_id[]", String(id)));
 
       await axios.post(`${API_PATHS.uploadDoc}`, formdata, {
         headers: { Authorization: `Bearer ${token}` }
       });
     }
-    if (body.contracts.length) {
+    const newContract = body.contracts.filter((item) => item.document === "");
+    if (newContract.length) {
       const formdata = new FormData();
       formdata.append("employee_id", String(body.id));
       employee.contractFormData.names.forEach((name) => formdata.append("names[]", name));
       employee.contractFormData.contract_dates.forEach((date) => formdata.append("contract_dates[]", date));
       employee.contractFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
       formdata.append("modified_contracts[]", "");
-      console.log(formdata);
-
       await axios.post(`${API_PATHS.uploadContract}`, formdata, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -249,6 +249,7 @@ export const employeeSlice = createSlice({
     removeDocumentFile: (state, action: PayloadAction<number>) => {
       let indexToRemove = state.documentFormData.documents.findIndex((obj) => obj.lastModified === action.payload);
       state.documentFormData.documents.splice(indexToRemove, 1);
+      state.documentFormData.deleted_ids.push(action.payload);
     },
     addContractFile: (state, action: PayloadAction<contractFormDataType>) => {
       const { names, contract_dates, documents } = action.payload;
