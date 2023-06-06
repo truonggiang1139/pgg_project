@@ -5,7 +5,7 @@ import { ROUTES } from "../configs/routes";
 const ProtectedRoute = () => {
   const auth = Cookies.get("token");
 
-  return auth ? <Outlet /> : <Navigate to={ROUTES.login} replace />;
+  return !auth ? <Outlet /> : <Navigate to={ROUTES.employee} replace />;
 };
 
 export default ProtectedRoute;

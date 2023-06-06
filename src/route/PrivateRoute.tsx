@@ -5,7 +5,7 @@ import { ROUTES } from "../configs/routes";
 const PrivateRoute = () => {
   const auth = Cookies.get("token");
 
-  return !auth ? <Outlet /> : <Navigate to={ROUTES.employee} replace />;
+  return auth ? <Outlet /> : <Navigate to={ROUTES.login} replace />;
 };
 
 export default PrivateRoute;

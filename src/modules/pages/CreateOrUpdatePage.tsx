@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import SideBar from "../components/SideBar";
 import BreadCrumbs from "../components/BreadCrumbs";
 import { Button } from "@mui/material";
@@ -72,17 +72,19 @@ export default function CreateOrUpdatePage() {
     setTab(newTab);
   };
   const handleAddOrUpdEmployee = async () => {
-    const result: any = await (idEmployee
-      ? dispatch(updateEmployee(employeeForm))
-      : dispatch(addEmployee(employeeForm)));
-
+    const result = await (idEmployee ? dispatch(updateEmployee(employeeForm)) : dispatch(addEmployee(employeeForm)));
+    if (result.payload !== "Success") {
+      toast.warn(result.payload, {
+        className: "bg-red-100 text-red-600 font-medium"
+      });
+      return;
+    }
+    toast.success("Change saved", {
+      className: "bg-green-100 text-green-600 font-medium"
+    });
     setTimeout(() => {
       navigate("/employee");
     }, 1500);
-
-    toast.warn("", {
-      className: "bg-red-100 text-red-600 font-medium"
-    });
   };
   const getData = async () => {
     try {
@@ -121,12 +123,7 @@ export default function CreateOrUpdatePage() {
     getData();
     if (idEmployee) {
       dispatch(getIdEmployee(Number(idEmployee)));
-
-      return;
     }
-    setTimeout(() => {
-      dispatch(checkInvalidEmployeeForm());
-    }, 2000);
     return () => {
       dispatch(resetForm());
     };

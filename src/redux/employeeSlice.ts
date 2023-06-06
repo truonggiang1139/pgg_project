@@ -1,6 +1,5 @@
 import {
   EmployeeErrorMessageType,
-  EmployeeListResponseType,
   EmployeeType,
   contractFormDataType,
   contractsType,
@@ -9,10 +8,9 @@ import {
   gradeType
 } from "./../constants/type";
 import Cookies from "js-cookie";
-import { PayloadAction, createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_PATHS } from "../configs/api";
-import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
 type dataValueType = {
@@ -116,6 +114,7 @@ const initialState: initialStateType = {
     employee_id: 1
   },
   contractFormData: {
+    employee_id: 1,
     names: [],
     contract_dates: [],
     documents: [],
@@ -133,29 +132,62 @@ export const getIdEmployee = createAsyncThunk("employeeId/get", async (id: numbe
 export const addEmployee = createAsyncThunk(
   "employee/addEmployee",
   async (body: Omit<EmployeeType, "id">, { getState }) => {
+    try {
+      let token = Cookies.get("token");
+      const res = await axios.post(`${API_PATHS.employee}`, body, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const { employee } = getState() as RootState;
+
+      if (body.documents.length) {
+        const formdata = new FormData();
+        formdata.append("employee_id", res.data.data.id);
+        employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
+
+        await axios.post(`${API_PATHS.uploadDoc}`, formdata, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      }
+      if (body.contracts.length) {
+        const formdata = new FormData();
+        formdata.append("employee_id", res.data.data.id);
+        employee.contractFormData.names.forEach((name) => formdata.append("names[]", name));
+        employee.contractFormData.contract_dates.forEach((date) => formdata.append("contract_dates[]", date));
+        employee.contractFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
+        formdata.append("modified_contracts[]", "");
+        await axios.post(`${API_PATHS.uploadContract}`, formdata, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      }
+      return res.data.message;
+    } catch (error: any) {
+      return error.response.data.message;
+    }
+  }
+);
+
+export const updateEmployee = createAsyncThunk("employee/updateEmployee", async (body: EmployeeType, { getState }) => {
+  try {
     let token = Cookies.get("token");
-    const res = await axios.post(`${API_PATHS.employee}`, body, {
+    const res = await axios.put(`${API_PATHS.employee}/${body.id}`, body, {
       headers: { Authorization: `Bearer ${token}` }
     });
-
-    // if (!res.ok) {
-    //   return rejectWithValue(response.status);
-    // }
 
     const { employee } = getState() as RootState;
 
     if (body.documents.length) {
       const formdata = new FormData();
-      formdata.append("employee_id", res.data.data.id);
+      formdata.append("employee_id", String(body.id));
       employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
 
       await axios.post(`${API_PATHS.uploadDoc}`, formdata, {
         headers: { Authorization: `Bearer ${token}` }
       });
     }
-    if (true) {
+    if (body.contracts.length) {
       const formdata = new FormData();
-      formdata.append("employee_id", res.data.data.id);
+      formdata.append("employee_id", String(body.id));
       employee.contractFormData.names.forEach((name) => formdata.append("names[]", name));
       employee.contractFormData.contract_dates.forEach((date) => formdata.append("contract_dates[]", date));
       employee.contractFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
@@ -164,33 +196,9 @@ export const addEmployee = createAsyncThunk(
         headers: { Authorization: `Bearer ${token}` }
       });
     }
-  }
-);
-export const updateEmployee = createAsyncThunk("employee/updateEmployee", async (body: EmployeeType, { getState }) => {
-  let token = Cookies.get("token");
-  const res = await axios.put(`${API_PATHS.employee}/${body.id}`, body, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-
-  const { employee } = getState() as RootState;
-  if (body.documents.length) {
-    const formdata = new FormData();
-    formdata.append("employee_id", String(body.id));
-    employee.documentFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
-    await axios.post(`${API_PATHS.uploadDoc}`, formdata, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-  }
-  if (body.contracts.length) {
-    const formdata = new FormData();
-    formdata.append("employee_id", String(body.id));
-    employee.contractFormData.names.forEach((name) => formdata.append("names[]", name));
-    employee.contractFormData.contract_dates.forEach((date) => formdata.append("contract_dates[]", date));
-    employee.contractFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
-    formdata.append("modified_contracts[]", "");
-    await axios.post(`${API_PATHS.uploadContract}`, formdata, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    return res.data.message;
+  } catch (error: any) {
+    return error.response.data.message;
   }
 });
 export const employeeSlice = createSlice({
@@ -262,12 +270,6 @@ export const employeeSlice = createSlice({
       })
       .addCase(getIdEmployee.pending, (state) => {
         state.loading = true;
-      })
-      .addCase(updateEmployee.rejected, (state, action) => {
-        console.log(action.payload);
-      })
-      .addCase(updateEmployee.fulfilled, (state, action) => {
-        console.log(action.payload);
       })
       .addCase(getIdEmployee.fulfilled, (state, acion) => {
         state.loading = false;

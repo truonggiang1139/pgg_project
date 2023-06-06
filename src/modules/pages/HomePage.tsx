@@ -1,4 +1,4 @@
-import { InputAdornment, Popover, TextField, Typography } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 
 import BreadCrumbs from "../components/BreadCrumbs";
 import DataTable from "../components/DataTable";
@@ -22,9 +22,10 @@ export default function HomePage() {
       return () => clearTimeout(timeoutId);
     }
     if (searchValue) {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         navigate(`/employee?search=${query}&page=${1}`);
       }, 1000);
+      return () => clearTimeout(timeoutId);
     }
   }, [query]);
 
