@@ -1,4 +1,3 @@
-import React from "react";
 import logo from "../../../assets/Rectangle 4.svg";
 import ForgotForm from "../components/ForgotForm";
 export default function ForgotPassword() {

@@ -1,20 +1,20 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import { Box, Button, FormControl, Typography } from "@mui/material";
+import classNames from "classnames";
+import moment from "moment";
 import React, { useState } from "react";
-import "../../App.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ReactComponent as IconCalendar } from "../../assets/iconCalendar.svg";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box, Button, FormControl, Typography } from "@mui/material";
-import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import iconRemove from "../../assets/iconRemove.svg";
-import classNames from "classnames";
-import { CustomTextField } from "../../CustomStyle/StyleInput";
-import { RootState, useAppDispatch } from "../../store";
-import { addContractFile, changeEmployeeForm } from "../../redux/employeeSlice";
 import { useSelector } from "react-redux";
-import { contractsType } from "../../constants/type";
-import moment from "moment";
 import { useParams } from "react-router-dom";
+import "../../App.scss";
+import { CustomTextField } from "../../CustomStyle/StyleInput";
+import { ReactComponent as IconCalendar } from "../../assets/iconCalendar.svg";
+import iconRemove from "../../assets/iconRemove.svg";
+import { contractsType } from "../../constants/type";
+import { addContractFile, changeEmployeeForm } from "../../redux/employeeSlice";
+import { RootState, useAppDispatch } from "../../store";
 
 type contractFileType = {
   file: File | null;
@@ -72,7 +72,8 @@ export default function ContractInput() {
             documents: [contractFile.file],
             names: [contractFile.contractName],
             contract_dates: [moment(contractFile.contractDate).format("YYYY-MM-DD")],
-            modified_contracts: []
+            modified_contracts: [],
+            employee_id: 0
           })
         );
         setContractFile({

@@ -1,12 +1,12 @@
 import { Pagination, PaginationItem } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import First from "../../assets/First.svg";
+import Last from "../../assets/Last.svg";
 import Next from "../../assets/Next.svg";
 import Previous from "../../assets/Previous.svg";
-import Last from "../../assets/Last.svg";
 import { dataFromSelector, dataToSelector, lastPageSelector, totalSelector } from "../../redux/employeeSelector";
-import { useLocation, useNavigate } from "react-router-dom";
 const TablePagination = () => {
   const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     navigate(`/employee?search=${searchValue === "null" ? "" : searchValue}&page=${page}`);

@@ -1,8 +1,7 @@
-import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-import { ROUTES } from "./configs/routes";
 import Cookies from "js-cookie";
+import { ROUTES } from "./configs/routes";
 
 const PrivateRoute = () => {
   const auth = Cookies.get("token");

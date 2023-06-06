@@ -1,17 +1,17 @@
-import { Button, Select, TextField, Typography, styled } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
-import { employeeContext } from "../pages/CreateOrUpdatePage";
-import { CustomAutoComplete } from "../../CustomStyle/StyleAutoComplete";
-import { benefitType, documentType, gradeType } from "../../constants/type";
-import { useSelector } from "react-redux";
-import { RootState, useAppDispatch } from "../../store";
-import { addDocumentFile, changeEmployeeForm } from "../../redux/employeeSlice";
-import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import TableDocument from "./TableDocument";
+import { Button, Select, TextField, Typography, styled } from "@mui/material";
 import moment from "moment";
+import React, { useContext, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { CustomAutoComplete } from "../../CustomStyle/StyleAutoComplete";
+import { benefitType, documentType, gradeType } from "../../constants/type";
+import { addDocumentFile, changeEmployeeForm } from "../../redux/employeeSlice";
+import { RootState, useAppDispatch } from "../../store";
+import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
+import { employeeContext } from "../pages/CreateOrUpdatePage";
+import TableDocument from "./TableDocument";
 const TextAreaStyle = styled("textarea")(({}) => ({
   width: "100%",
   flexGrow: 1,

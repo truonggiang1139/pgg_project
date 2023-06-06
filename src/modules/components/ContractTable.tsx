@@ -1,9 +1,8 @@
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import React from "react";
-import { RootState, useAppDispatch } from "../../store";
 import { useSelector } from "react-redux";
 import iconDelete from "../../assets/iconDelete.svg";
 import { changeEmployeeForm, removeContractFile } from "../../redux/employeeSlice";
+import { RootState, useAppDispatch } from "../../store";
 export default function ContractTable() {
   const dispatch = useAppDispatch();
   const contracts = useSelector((state: RootState) => state.employee.employeeForm.contracts);

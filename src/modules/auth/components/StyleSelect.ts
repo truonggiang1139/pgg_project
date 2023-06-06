@@ -23,7 +23,7 @@ export const customPaperProps: PaperProps = {
   }
 };
 
-const CustomInputSelect = styled(InputBase)(({ theme }) => ({
+const CustomInputSelect = styled(InputBase)(() => ({
   textTransform: "none",
   height: "48px",
   fontWeight: "400",

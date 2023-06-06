@@ -1,11 +1,11 @@
-import { FormHelperText, MenuItem, Select } from "@mui/material";
-import React, { useContext } from "react";
-import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { genderType, marriageType } from "../../constants/type";
-import { useAppDispatch } from "../../store";
-import { changeEmployeeForm, validateEmployeeForm } from "../../redux/employeeSlice";
+import { FormHelperText, MenuItem, Select } from "@mui/material";
+import React from "react";
 import { useParams } from "react-router-dom";
+import { genderType, marriageType } from "../../constants/type";
+import { changeEmployeeForm, validateEmployeeForm } from "../../redux/employeeSlice";
+import { useAppDispatch } from "../../store";
+import CustomInputSelect, { customPaperProps } from "../auth/components/StyleSelect";
 type SelectFormType = {
   label: string;
   value: string;
