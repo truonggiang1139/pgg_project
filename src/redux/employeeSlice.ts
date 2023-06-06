@@ -192,6 +192,8 @@ export const updateEmployee = createAsyncThunk("employee/updateEmployee", async 
       employee.contractFormData.contract_dates.forEach((date) => formdata.append("contract_dates[]", date));
       employee.contractFormData.documents.forEach((doc) => formdata.append("documents[]", doc, doc.name));
       formdata.append("modified_contracts[]", "");
+      console.log(formdata);
+
       await axios.post(`${API_PATHS.uploadContract}`, formdata, {
         headers: { Authorization: `Bearer ${token}` }
       });
